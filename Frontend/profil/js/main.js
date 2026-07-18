@@ -72,11 +72,22 @@ async function bootstrap() {
   if (heroName) heroName.textContent = identity.name;
   if (heroRole) heroRole.textContent = identity.role;
 
-  // Render About Me description
+  // Render About Me description based on actual database fields
   const dynamicAbout = document.getElementById("dynamicAbout");
-  if (dynamicAbout && profil?.deskripsi) {
-    const lines = profil.deskripsi.split('\n');
-    dynamicAbout.innerHTML = lines.map(line => `<p class="about__line">${line.trim() || '&nbsp;'}</p>`).join('');
+  if (dynamicAbout && profil) {
+    dynamicAbout.innerHTML = `
+      <p class="about__line">Hello, I'm ${profil.nama_lengkap || 'Arthur Willyam Liang'}.</p>
+      <p class="about__line">A Semester ${profil.semester || 6} student at</p>
+      <p class="about__line">${profil.universitas || 'Universitas Kristen Satya Wacana'},</p>
+      <p class="about__line">studying in ${profil.prodi || 'Information Systems'} (${profil.fakultas || 'FTI'}).</p>
+      <p class="about__line">&nbsp;</p>
+      <p class="about__line">Born in ${profil.tempat_lahir || 'Salatiga'} on ${profil.tanggal_lahir ? new Date(profil.tanggal_lahir).toLocaleDateString('id-ID') : '01/01/2003'}.</p>
+      <p class="about__line">Currently based in: ${profil.alamat || 'Salatiga'}.</p>
+      <p class="about__line">&nbsp;</p>
+      <p class="about__line">I am deeply passionate about bridging technical expertise</p>
+      <p class="about__line">with strong leadership to build impactful digital solutions.</p>
+      <p class="about__line">I always strive for absolute excellence.</p>
+    `;
   }
 
   // Render Contact Links
@@ -97,16 +108,6 @@ async function bootstrap() {
   const contactEmail = document.getElementById("contactEmail");
   if (contactEmail && profil?.email) {
     contactEmail.href = `mailto:${profil.email}`;
-  }
-
-  const contactGithub = document.getElementById("contactGithub");
-  if (contactGithub && profil?.github) {
-    contactGithub.href = profil.github;
-  }
-
-  const contactLinkedin = document.getElementById("contactLinkedin");
-  if (contactLinkedin && profil?.linkedin) {
-    contactLinkedin.href = profil.linkedin;
   }
 
   renderDynamicContent(experiences, projects, skills, caseStudies);
