@@ -154,7 +154,15 @@ async function loadCaseStudies() {
 function getCaseStudyFields(p = {}) {
   // Extract initial images for preview
   const imgs = (p.gambar_urls || '').split(',').map(u => u.trim()).filter(Boolean);
-  const previewHtml = imgs.map(u => `<img src="/profil/img/${u}" />`).join('');
+  const getImgSrc = (img) => img.startsWith('http') ? img : `/profil/img/${img}`;
+  const previewHtml = imgs.map(u => `
+    <div class="preview-item" data-url="${u}">
+      <img src="${getImgSrc(u)}" />
+      <button type="button" class="btn-remove" onclick="removeImage(this)">
+        <i class="ph ph-x"></i>
+      </button>
+    </div>
+  `).join('');
 
   return `
     <div class="form-group"><label>Judul</label><input name="judul" value="${p.judul || ''}" required /></div>
@@ -176,6 +184,16 @@ function getCaseStudyFields(p = {}) {
     <div class="form-group"><label>Link Project</label><input name="link_project" value="${p.link_project || ''}" /></div>
   `;
 }
+
+window.removeImage = (btn) => {
+  const item = btn.closest('.preview-item');
+  const urlToRemove = item.dataset.url;
+  const hiddenInput = document.getElementById('hiddenGambarUrls');
+  let urls = hiddenInput.value.split(',').map(u => u.trim()).filter(Boolean);
+  urls = urls.filter(u => u !== urlToRemove);
+  hiddenInput.value = urls.join(',');
+  item.remove();
+};
 
 function initDropzone() {
   const dropzone = document.getElementById('csDropzone');
@@ -224,14 +242,15 @@ function initDropzone() {
         const data = await res.json();
         
         if (data.success && data.url) {
-          // Cloudinary returns secure_url
-          // The main website logic expects either the filename or full URL.
-          // Since main.js prepends `/profil/img/` if it doesn't start with http,
-          // we can just pass the full Cloudinary URL and update main.js slightly if needed,
-          // OR we can rely on main.js to just use this URL.
-          // Let's store the full URL.
           uploadedUrls.push(data.url);
-          preview.innerHTML += `<img src="${data.url}" />`;
+          preview.innerHTML += `
+            <div class="preview-item" data-url="${data.url}">
+              <img src="${data.url}" />
+              <button type="button" class="btn-remove" onclick="removeImage(this)">
+                <i class="ph ph-x"></i>
+              </button>
+            </div>
+          `;
         } else {
           alert('Gagal upload: ' + data.error);
         }
