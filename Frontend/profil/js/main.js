@@ -72,6 +72,43 @@ async function bootstrap() {
   if (heroName) heroName.textContent = identity.name;
   if (heroRole) heroRole.textContent = identity.role;
 
+  // Render About Me description
+  const dynamicAbout = document.getElementById("dynamicAbout");
+  if (dynamicAbout && profil?.deskripsi) {
+    const lines = profil.deskripsi.split('\n');
+    dynamicAbout.innerHTML = lines.map(line => `<p class="about__line">${line.trim() || '&nbsp;'}</p>`).join('');
+  }
+
+  // Render Contact Links
+  const contactWA = document.getElementById("contactWA");
+  const navContactWA = document.getElementById("navContactWA");
+  if (profil?.telepon) {
+    let phoneStr = profil.telepon.replace(/\D/g, '');
+    if (phoneStr.startsWith('0')) phoneStr = '62' + phoneStr.substring(1);
+    const waLink = `https://wa.me/${phoneStr}`;
+    
+    if (contactWA) contactWA.href = waLink;
+    if (navContactWA) {
+      navContactWA.href = waLink;
+      navContactWA.innerHTML = `WhatsApp: +${phoneStr}`;
+    }
+  }
+
+  const contactEmail = document.getElementById("contactEmail");
+  if (contactEmail && profil?.email) {
+    contactEmail.href = `mailto:${profil.email}`;
+  }
+
+  const contactGithub = document.getElementById("contactGithub");
+  if (contactGithub && profil?.github) {
+    contactGithub.href = profil.github;
+  }
+
+  const contactLinkedin = document.getElementById("contactLinkedin");
+  if (contactLinkedin && profil?.linkedin) {
+    contactLinkedin.href = profil.linkedin;
+  }
+
   renderDynamicContent(experiences, projects, skills, caseStudies);
 
   if (loadingEl) loadingEl.hidden = true;

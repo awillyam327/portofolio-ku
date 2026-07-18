@@ -56,8 +56,8 @@
     </nav>
     <div class="nav-overlay__contact">
       <p data-nav-name>Arthur Willyam Liang</p>
-      <a href="https://wa.me/6282230429592" target="_blank" rel="noopener noreferrer" data-cursor-hover>
-        WhatsApp: +62 822-3042-9592
+      <a href="#" id="navContactWA" target="_blank" rel="noopener noreferrer" data-cursor-hover>
+        WhatsApp
       </a>
     </div>
   </div>
@@ -121,24 +121,8 @@
         <p class="section-label">About Me</p>
         <h2 class="section-title">Who I Am</h2>
       </div>
-      <div class="about__right">
-        <p class="about__line">Hello, I'm Arthur Willyam Liang.</p>
-        <p class="about__line">An Information Systems student at</p>
-        <p class="about__line">Universitas Kristen Satya Wacana,</p>
-        <p class="about__line">specializing in Cybersecurity.</p>
-        <p class="about__line">&nbsp;</p>
-        <p class="about__line">I am deeply passionate about bridging</p>
-        <p class="about__line">technical expertise with strong leadership.</p>
-        <p class="about__line">From serving as a first-year Teaching</p>
-        <p class="about__line">Assistant to leading national-scale</p>
-        <p class="about__line">tech seminars and competing in National</p>
-        <p class="about__line">Business Championships, I always</p>
-        <p class="about__line">strive for absolute excellence.</p>
-        <p class="about__line">&nbsp;</p>
-        <p class="about__line">Beyond academics, I am an award-winning</p>
-        <p class="about__line">E-Sports champion and a dedicated leader,</p>
-        <p class="about__line">always eager to tackle new challenges</p>
-        <p class="about__line">and build impactful digital solutions.</p>
+      <div class="about__right" id="dynamicAbout">
+        <!-- Injected via JS -->
       </div>
       <div class="about__stats" data-stagger>
         <div class="about__stat" data-stagger-child>
@@ -255,19 +239,19 @@
         </form>
 
         <div class="contact__links" data-stagger>
-          <a href="https://wa.me/6282230429592" target="_blank" rel="noopener noreferrer" class="contact__link" data-stagger-child data-cursor-hover>
+          <a href="#" id="contactWA" target="_blank" rel="noopener noreferrer" class="contact__link" data-stagger-child data-cursor-hover>
             <i class="ph ph-whatsapp-logo"></i>
             <span>WhatsApp</span>
           </a>
-          <a href="mailto:awillyam327@gmail.com" class="contact__link" data-stagger-child data-cursor-hover>
+          <a href="#" id="contactEmail" class="contact__link" data-stagger-child data-cursor-hover>
             <i class="ph ph-envelope-simple"></i>
             <span>Email</span>
           </a>
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="contact__link" data-stagger-child data-cursor-hover>
+          <a href="#" id="contactGithub" target="_blank" rel="noopener noreferrer" class="contact__link" data-stagger-child data-cursor-hover>
             <i class="ph ph-github-logo"></i>
             <span>GitHub</span>
           </a>
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="contact__link" data-stagger-child data-cursor-hover>
+          <a href="#" id="contactLinkedin" target="_blank" rel="noopener noreferrer" class="contact__link" data-stagger-child data-cursor-hover>
             <i class="ph ph-linkedin-logo"></i>
             <span>LinkedIn</span>
           </a>
