@@ -305,9 +305,14 @@ async function loadProfil() {
       <div class="form-group"><label>Email</label><input name="email" value="${p.email || ''}" /></div>
       <div class="form-group"><label>Telepon</label><input name="telepon" value="${p.telepon || ''}" /></div>
       <div class="form-group"><label>Universitas</label><input name="universitas" value="${p.universitas || ''}" /></div>
+      <div class="form-group"><label>Fakultas</label><input name="fakultas" value="${p.fakultas || ''}" /></div>
       <div class="form-group"><label>Prodi</label><input name="prodi" value="${p.prodi || ''}" /></div>
       <div class="form-group"><label>Semester</label><input name="semester" type="number" value="${p.semester || ''}" /></div>
       <div class="form-group"><label>Tempat Lahir</label><input name="tempat_lahir" value="${p.tempat_lahir || ''}" /></div>
+      <div class="form-group">
+        <label>Tanggal Lahir</label>
+        <input name="tanggal_lahir" type="date" value="${p.tanggal_lahir ? new Date(p.tanggal_lahir).toISOString().split('T')[0] : ''}" />
+      </div>
       <div class="form-group full-width"><label>Alamat</label><input name="alamat" value="${p.alamat || ''}" /></div>
       <button type="submit" class="btn btn--primary">Simpan Profil</button>
     </form>
