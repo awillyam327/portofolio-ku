@@ -8,6 +8,10 @@
     {
       "src": "Frontend/**",
       "use": "@vercel/static"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -25,7 +29,7 @@
     },
     {
       "src": "/",
-      "dest": "/Frontend/profil/index.html"
+      "dest": "/index.html"
     },
     {
       "src": "/(.*)",
