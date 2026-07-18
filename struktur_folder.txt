@@ -1,0 +1,44 @@
+Tugas Porto/porto/
+├── Backend/
+│   ├── admin/
+│   │   ├── dashboard.py
+│   │   ├── experience.py
+│   │   ├── login.py
+│   │   ├── profiles.py
+│   │   ├── projects.py
+│   │   ├── skills.py
+│   │   └── upload.py
+│   └── utama/
+│
+├── Frontend/
+│   ├── admin/
+│   │   ├── css/
+│   │   └── js/
+│   ├── profil/
+│   │   ├── css/
+│   │   │   └── style.css
+│   │   ├── js/
+│   │   │   ├── api.js
+│   │   │   ├── cursor.js
+│   │   │   ├── main.js
+│   │   │   ├── navbar.js
+│   │   │   ├── preloader.js
+│   │   │   └── sequence-scroll.js
+│   │   └── sequence/
+│   │       └── PUT_FRAMES_HERE.txt
+│   └── utama/
+│       ├── css/
+│       │   └── style.css
+│       └── js/
+│           └── script.js
+│
+├── app.py
+├── config.py
+├── model.py
+├── index.html
+├── requirements.txt
+├── README.md
+├── INTEGRATION_NOTES.md
+├── struktur_folder.txt
+├── ERD Web Portofolio (1).png
+└── favicon.ico

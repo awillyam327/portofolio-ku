@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arthur Willyam Liang — Cybersecurity</title>
+  <meta name="description" content="Personal portfolio of Arthur Willyam Liang, cybersecurity specialist." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Syne:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+
+  <link rel="stylesheet" href="/profil/css/style.css" />
+</head>
+<body>
+  <!-- Preloader -->
+  <div id="preloader" class="preloader">
+    <div class="preloader__text-wrap">
+      <h1 class="preloader__name" data-preloader-name>Arthur Willyam Liang</h1>
+    </div>
+    <div class="preloader__text-wrap">
+      <p class="preloader__role" data-preloader-role>Cybersecurity</p>
+    </div>
+    <div class="preloader__bar-wrap">
+      <div class="preloader__track">
+        <div class="preloader__fill" id="preloaderFill"></div>
+      </div>
+      <span class="preloader__percent" id="preloaderPercent">0%</span>
+    </div>
+  </div>
+
+  <!-- Custom cursor -->
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+
+  <!-- Floating navbar -->
+  <header class="navbar">
+    <a href="#home" class="navbar__logo">AWL<span>.</span></a>
+    <button class="navbar__toggle" id="navToggle" aria-label="Buka menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <!-- Fullscreen nav overlay -->
+  <div class="nav-overlay" id="navOverlay">
+    <nav class="nav-overlay__links">
+      <a href="#home">Home</a>
+      <a href="#works">Works</a>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-overlay__contact">
+      <p data-nav-name>Arthur Willyam Liang</p>
+      <a href="https://wa.me/6282230429592" target="_blank" rel="noopener noreferrer" data-cursor-hover>
+        WhatsApp: +62 822-3042-9592
+      </a>
+    </div>
+  </div>
+
+  <main id="home">
+    <!-- ============================================ -->
+    <!-- HERO: Scroll-scrubbed image sequence canvas  -->
+    <!-- ============================================ -->
+    <section class="sequence" id="sequence">
+      <div class="sequence__sticky">
+        <canvas id="sequenceCanvas"></canvas>
+
+        <div class="sequence__loading" id="sequenceLoading">
+          <span>Loading experience… <span id="sequenceLoadingPercent">0%</span></span>
+        </div>
+
+        <div class="sequence__text-layer">
+          <h1 class="sequence__text sequence__text--name" id="seqText1">Arthur Willyam Liang</h1>
+          <h2 class="sequence__text sequence__text--statement" id="seqText2">Cyber Security</h2>
+          <p class="sequence__text sequence__text--eyebrow" id="seqText3">S1 Information System</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- EXPERIENCE                                   -->
+    <!-- ============================================ -->
+    <section class="works" id="works">
+      <div class="works__header" data-reveal>
+        <p class="section-label">Leadership & Experience</p>
+        <h2 class="section-title">Professional Journey</h2>
+      </div>
+
+      <div class="works__gallery" data-reveal>
+        <div class="works__gallery-track" id="dynamicGallery">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+      <div class="works__timeline" id="worksTimeline">
+        <svg class="timeline__svg" preserveAspectRatio="none">
+          <path class="timeline__path" d="" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"></path>
+          <path class="timeline__path-glow" d="" fill="none" stroke="url(#glowGradient)" stroke-width="4"></path>
+          <defs>
+            <linearGradient id="glowGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#fff" stop-opacity="1" />
+              <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.2" />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <!-- Injected via JS -->
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- ABOUT                                        -->
+    <!-- ============================================ -->
+    <section class="about" id="about">
+      <div class="about__left" data-reveal>
+        <p class="section-label">About Me</p>
+        <h2 class="section-title">Who I Am</h2>
+      </div>
+      <div class="about__right">
+        <p class="about__line">Hello, I'm Arthur Willyam Liang.</p>
+        <p class="about__line">An Information Systems student at</p>
+        <p class="about__line">Universitas Kristen Satya Wacana,</p>
+        <p class="about__line">specializing in Cybersecurity.</p>
+        <p class="about__line">&nbsp;</p>
+        <p class="about__line">I am deeply passionate about bridging</p>
+        <p class="about__line">technical expertise with strong leadership.</p>
+        <p class="about__line">From serving as a first-year Teaching</p>
+        <p class="about__line">Assistant to leading national-scale</p>
+        <p class="about__line">tech seminars and competing in National</p>
+        <p class="about__line">Business Championships, I always</p>
+        <p class="about__line">strive for absolute excellence.</p>
+        <p class="about__line">&nbsp;</p>
+        <p class="about__line">Beyond academics, I am an award-winning</p>
+        <p class="about__line">E-Sports champion and a dedicated leader,</p>
+        <p class="about__line">always eager to tackle new challenges</p>
+        <p class="about__line">and build impactful digital solutions.</p>
+      </div>
+      <div class="about__stats" data-stagger>
+        <div class="about__stat" data-stagger-child>
+          <span class="about__stat-num">3.92</span>
+          <span class="about__stat-label">Current GPA</span>
+        </div>
+        <div class="about__stat" data-stagger-child>
+          <span class="about__stat-num">2026</span>
+          <span class="about__stat-label">GenBI Scholar</span>
+        </div>
+        <div class="about__stat" data-stagger-child>
+          <span class="about__stat-num">1st</span>
+          <span class="about__stat-label">Year Teaching Assistant</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- FEATURED PROJECT (PORTFOLIO CASE STUDY)      -->
+    <!-- ============================================ -->
+    <div id="dynamicCaseStudies">
+      <!-- Injected via JS -->
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SKILLS                                       -->
+    <!-- ============================================ -->
+    <section class="services" id="services">
+      <div class="services__header" data-reveal>
+        <p class="section-label">Core Competencies</p>
+        <h2 class="section-title">Skills &amp; Expertise</h2>
+      </div>
+
+      <div class="services__grid" id="dynamicSkills" data-stagger>
+        <!-- Injected via JS -->
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- AWARDS & CERTIFICATIONS                      -->
+    <!-- ============================================ -->
+    <section class="testimonials" data-reveal>
+      <div class="testimonials__header">
+        <p class="section-label">Achievements</p>
+        <h2 class="section-title">Awards &amp; Certifications</h2>
+      </div>
+
+      <div class="testimonials__slider">
+        <div class="testimonials__track">
+          <div class="testimonials__slide">
+            <blockquote>
+              &ldquo;E-sports Champion: Officially awarded by Kejurprov Jawa Timur, Piala Gubernur Jawa Timur, Piala Ganjar Caruban, and School Winter Cup Indonesia for PUBG Mobile.&rdquo;
+            </blockquote>
+            <cite>— Professional E-Sports Athlete</cite>
+          </div>
+          <div class="testimonials__slide">
+            <blockquote>
+              &ldquo;National Finalist at the Veteran Business Championship 2025. Recognized for innovative business strategies and presentation.&rdquo;
+            </blockquote>
+            <cite>— Veteran Business Championship</cite>
+          </div>
+          <div class="testimonials__slide">
+            <blockquote>
+              &ldquo;Event Leadership: Head of Committee for the National Webinar ISG UKSW 2025 (Mastering GEN AI Audits) &amp; Event Coordinator for National Seminar 2026 (AI CAREER HACKS).&rdquo;
+            </blockquote>
+            <cite>— ISACA Student Group UKSW</cite>
+          </div>
+        </div>
+        <div class="testimonials__dots">
+          <button class="testimonials__dot active" aria-label="Slide 1"></button>
+          <button class="testimonials__dot" aria-label="Slide 2"></button>
+          <button class="testimonials__dot" aria-label="Slide 3"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- INFINITE MARQUEE                             -->
+    <!-- ============================================ -->
+    <div class="marquee" aria-hidden="true">
+        <span class="marquee__item">Team Management</span>
+        <span class="marquee__sep">&bull;</span>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- CONTACT & FOOTER                             -->
+    <!-- ============================================ -->
+    <section class="contact" id="contact">
+      <div class="contact__header" data-reveal>
+        <p class="section-label">Get In Touch</p>
+        <h2 class="contact__big-text">Let&rsquo;s<br />Work Together</h2>
+      </div>
+
+      <div class="contact__body">
+        <form class="contact__form" id="contactForm">
+          <div class="contact__form-group">
+            <label for="contactName">Nama</label>
+            <input type="text" id="contactName" name="nama" placeholder="Nama lengkap Anda" required />
+          </div>
+          <div class="contact__form-group">
+            <label for="contactEmail">Email</label>
+            <input type="email" id="contactEmail" name="email" placeholder="email@anda.com" required />
+          </div>
+          <div class="contact__form-group">
+            <label for="contactMessage">Pesan</label>
+            <textarea id="contactMessage" name="pesan" rows="5" placeholder="Tulis pesan Anda di sini..." required></textarea>
+          </div>
+          <button type="submit" class="contact__submit" id="contactSubmit" data-cursor-hover>
+            <span>Kirim Pesan</span>
+            <i class="ph ph-paper-plane-tilt"></i>
+          </button>
+          <p class="contact__status" id="contactStatus"></p>
+        </form>
+
+        <div class="contact__links" data-stagger>
+          <a href="https://wa.me/6282230429592" target="_blank" rel="noopener noreferrer" class="contact__link" data-stagger-child data-cursor-hover>
+            <i class="ph ph-whatsapp-logo"></i>
+            <span>WhatsApp</span>
+          </a>
+          <a href="mailto:awillyam327@gmail.com" class="contact__link" data-stagger-child data-cursor-hover>
+            <i class="ph ph-envelope-simple"></i>
+            <span>Email</span>
+          </a>
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="contact__link" data-stagger-child data-cursor-hover>
+            <i class="ph ph-github-logo"></i>
+            <span>GitHub</span>
+          </a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="contact__link" data-stagger-child data-cursor-hover>
+            <i class="ph ph-linkedin-logo"></i>
+            <span>LinkedIn</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer__big" data-reveal>
+        <span>Arthur Willyam Liang</span>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2026 Arthur Willyam Liang. All rights reserved.</p>
+        <p class="footer__credit">Crafted with precision &amp; passion.</p>
+      </div>
+    </footer>
+  </main>
+
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script type="module" src="/profil/js/main.js"></script>
+</body>
+</html>

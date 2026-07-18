@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "app.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "Frontend/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/app.py"
+    },
+    {
+      "src": "/profil/(.*)",
+      "dest": "/Frontend/profil/$1"
+    },
+    {
+      "src": "/admin/(.*)",
+      "dest": "/Frontend/admin/$1"
+    },
+    {
+      "src": "/",
+      "dest": "/Frontend/profil/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/app.py"
+    }
+  ]
+}
