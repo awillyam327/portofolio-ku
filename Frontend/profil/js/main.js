@@ -160,7 +160,7 @@ function renderDynamicContent(experiences, projects, skills, caseStudies, blogs,
         ? (images[0].startsWith('http') ? images[0] : `/profil/img/${images[0]}`) 
         : 'https://via.placeholder.com/800x600/12121a/e8e8ed?text=No+Image';
         
-      const linkHtml = cs.link_project ? `<a href="${cs.link_project}" target="_blank" class="showcase-card__link">Live Demo / Details</a>` : '';
+      const linkHtml = cs.link_project ? `<a href="${cs.link_project}" target="_blank" class="showcase-card__link">Menuju Link</a>` : '';
       
       caseStudiesContainer.innerHTML += `
         <div class="showcase-card">
