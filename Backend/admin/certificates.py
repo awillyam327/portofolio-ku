@@ -2,21 +2,20 @@ from flask import Blueprint, request, jsonify
 from model import Database
 from Backend.admin.login import token_required
 
-skills_bp = Blueprint('skills', __name__)
+certificates_bp = Blueprint('certificates', __name__)
 
-# ✅ PERBAIKAN: Hapus '/api' di depan route
-@skills_bp.route('/skills', methods=['GET'])
-def get_skills():
-    """Mengambil semua skills (publik)"""
+@certificates_bp.route('/certificates', methods=['GET'])
+def get_certificates():
+    """Mengambil semua certificates"""
     try:
         db = Database()
         
         query = """
-            SELECT s.*, u.username 
-            FROM skills s 
-            JOIN users u ON s.user_id = u.id 
+            SELECT c.*, u.username 
+            FROM certificates c 
+            JOIN users u ON c.user_id = u.id 
             WHERE u.role = 'admin'
-            ORDER BY s.id DESC
+            ORDER BY c.id DESC
         """
         result = db.execute_query(query, fetch=True)
         
@@ -28,17 +27,17 @@ def get_skills():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@skills_bp.route('/skills/<int:id>', methods=['GET'])
-def get_skill_by_id(id):
-    """Mengambil satu skill berdasarkan ID"""
+@certificates_bp.route('/certificates/<int:id>', methods=['GET'])
+def get_certificate_by_id(id):
+    """Mengambil satu certificate berdasarkan ID"""
     try:
         db = Database()
         
-        query = "SELECT * FROM skills WHERE id = %s"
+        query = "SELECT * FROM certificates WHERE id = %s"
         result = db.execute_query(query, (id,), fetch=True)
         
         if not result:
-            return jsonify({'error': 'Skill tidak ditemukan'}), 404
+            return jsonify({'error': 'Certificate tidak ditemukan'}), 404
         
         return jsonify({
             'success': True,
@@ -48,14 +47,14 @@ def get_skill_by_id(id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@skills_bp.route('/skills', methods=['POST'])
+@certificates_bp.route('/certificates', methods=['POST'])
 @token_required
-def create_skill(current_user):
-    """Create skill baru"""
+def create_certificate(current_user):
+    """Create certificate baru"""
     try:
         data = request.get_json()
         
-        required_fields = ['nama_skill']
+        required_fields = ['judul', 'gambar_url']
         for field in required_fields:
             if not data.get(field):
                 return jsonify({'error': f'{field} wajib diisi'}), 400
@@ -63,44 +62,41 @@ def create_skill(current_user):
         db = Database()
         
         query = """
-            INSERT INTO skills (user_id, nama_skill, icon_class, logo_url)
-            VALUES (%s, %s, %s, %s)
+            INSERT INTO certificates (user_id, judul, gambar_url)
+            VALUES (%s, %s, %s)
         """
         values = (
             current_user,
-            data.get('nama_skill'),
-            data.get('icon_class'),
-            data.get('logo_url')
+            data.get('judul'),
+            data.get('gambar_url')
         )
         
         new_id = db.execute_query(query, values)
         
         return jsonify({
             'success': True,
-            'message': 'Skill berhasil dibuat',
+            'message': 'Certificate berhasil dibuat',
             'id': new_id
         }), 201
         
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@skills_bp.route('/skills/<int:id>', methods=['PUT'])
+@certificates_bp.route('/certificates/<int:id>', methods=['PUT'])
 @token_required
-def update_skill(current_user, id):
-    """Update skill"""
+def update_certificate(current_user, id):
+    """Update certificate"""
     try:
         data = request.get_json()
-        
         db = Database()
         
-        # Cek apakah skill milik user ini
-        check_query = "SELECT id FROM skills WHERE id = %s AND user_id = %s"
+        check_query = "SELECT id FROM certificates WHERE id = %s AND user_id = %s"
         existing = db.execute_query(check_query, (id, current_user), fetch=True)
         
         if not existing:
-            return jsonify({'error': 'Skill tidak ditemukan atau bukan milik Anda'}), 404
+            return jsonify({'error': 'Certificate tidak ditemukan atau bukan milik Anda'}), 404
         
-        allowed_fields = ['nama_skill', 'icon_class', 'logo_url']
+        allowed_fields = ['judul', 'gambar_url']
         updates = []
         values = []
         
@@ -113,37 +109,36 @@ def update_skill(current_user, id):
             return jsonify({'error': 'Tidak ada data yang diupdate'}), 400
         
         values.append(id)
-        query = f"UPDATE skills SET {', '.join(updates)} WHERE id = %s"
+        query = f"UPDATE certificates SET {', '.join(updates)} WHERE id = %s"
         db.execute_query(query, tuple(values))
         
         return jsonify({
             'success': True,
-            'message': 'Skill berhasil diupdate'
+            'message': 'Certificate berhasil diupdate'
         }), 200
         
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@skills_bp.route('/skills/<int:id>', methods=['DELETE'])
+@certificates_bp.route('/certificates/<int:id>', methods=['DELETE'])
 @token_required
-def delete_skill(current_user, id):
-    """Delete skill"""
+def delete_certificate(current_user, id):
+    """Delete certificate"""
     try:
         db = Database()
         
-        # Cek apakah skill milik user ini
-        check_query = "SELECT id FROM skills WHERE id = %s AND user_id = %s"
+        check_query = "SELECT id FROM certificates WHERE id = %s AND user_id = %s"
         existing = db.execute_query(check_query, (id, current_user), fetch=True)
         
         if not existing:
-            return jsonify({'error': 'Skill tidak ditemukan atau bukan milik Anda'}), 404
+            return jsonify({'error': 'Certificate tidak ditemukan atau bukan milik Anda'}), 404
         
-        query = "DELETE FROM skills WHERE id = %s"
+        query = "DELETE FROM certificates WHERE id = %s"
         db.execute_query(query, (id,))
         
         return jsonify({
             'success': True,
-            'message': 'Skill berhasil dihapus'
+            'message': 'Certificate berhasil dihapus'
         }), 200
         
     except Exception as e:

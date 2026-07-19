@@ -121,6 +121,20 @@ CREATE TABLE IF NOT EXISTS skills (
     user_id INT NOT NULL,
     nama_skill VARCHAR(200) NOT NULL,
     icon_class VARCHAR(100),
+    logo_url VARCHAR(500),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- ============================================================
+-- TABEL: certificates
+-- Menyimpan daftar sertifikat
+-- ============================================================
+CREATE TABLE IF NOT EXISTS certificates (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    judul VARCHAR(200) NOT NULL,
+    gambar_url VARCHAR(500) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

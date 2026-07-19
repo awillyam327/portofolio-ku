@@ -16,6 +16,7 @@ from Backend.utama.contact import contact_bp
 from Backend.admin.upload import upload_bp
 from Backend.admin.contacts import contacts_admin_bp
 from Backend.admin.blogs import blogs_bp
+from Backend.admin.certificates import certificates_bp
 
 
 def create_app():
@@ -44,6 +45,7 @@ def create_app():
     app.register_blueprint(contacts_admin_bp, url_prefix='/api')
     app.register_blueprint(case_studies_bp, url_prefix='/api')
     app.register_blueprint(blogs_bp, url_prefix='/api')
+    app.register_blueprint(certificates_bp, url_prefix='/api')
     
     # Route untuk serving frontend files
     @app.route('/')

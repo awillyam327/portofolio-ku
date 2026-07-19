@@ -1,4 +1,4 @@
-import { getProfil, getExperiences, getProjects, getSkills, getCaseStudies, getBlogs, pick } from "./api.js";
+import { getProfil, getExperiences, getProjects, getSkills, getCaseStudies, getBlogs, getCertificates, pick } from "./api.js";
 import { initCursor } from "./cursor.js";
 import { initNavbar, setNavIdentity } from "./navbar.js";
 import { setProgress, setIdentity, reveal } from "./preloader.js";
@@ -48,20 +48,21 @@ async function bootstrap() {
     if (loadingPercentEl) loadingPercentEl.textContent = `${percent}%`;
   }
 
-  const framesPromise = preloadFrames((fraction) => {
-    framesProgress = fraction;
-    updateOverall();
-  });
+
 
   // Fetch all data
-  const [profil, experiences, projects, skills, caseStudies, blogs] = await Promise.all([
+  const [profil, experiences, projects, skills, caseStudies, blogs, certificates, framesPromise] = await Promise.all([
     getProfil().catch(() => null),
     getExperiences().catch(() => []),
     getProjects().catch(() => []),
     getSkills().catch(() => []),
     getCaseStudies().catch(() => []),
     getBlogs().catch(() => []),
-    framesPromise
+    getCertificates().catch(() => []),
+    preloadFrames((fraction) => {
+      framesProgress = fraction;
+      updateOverall();
+    })
   ]);
 
   dataProgress = 1;
@@ -115,7 +116,7 @@ async function bootstrap() {
     contactEmail.href = `mailto:${profil.email}`;
   }
 
-  renderDynamicContent(experiences, projects, skills, caseStudies, blogs);
+  renderDynamicContent(experiences, projects, skills, caseStudies, blogs, certificates);
 
   if (loadingEl) loadingEl.hidden = true;
 
@@ -146,81 +147,40 @@ async function bootstrap() {
   try { initShowcaseTabs(); } catch (e) { console.warn('[Tabs] Init failed:', e); }
 }
 
-function renderDynamicContent(experiences, projects, skills, caseStudies) {
-  // 0. Render Case Studies
+function renderDynamicContent(experiences, projects, skills, caseStudies, blogs, certificates) {
+  // 0. Render Projects (Showcase Tab 1)
   const caseStudiesContainer = document.getElementById("dynamicCaseStudies");
-  if (caseStudiesContainer && caseStudies && caseStudies.length > 0) {
+  if (caseStudiesContainer && projects && projects.length > 0) {
+    caseStudiesContainer.className = "showcase-grid";
     caseStudiesContainer.innerHTML = "";
-    caseStudies.forEach((cs, i) => {
-      // Split tech stack by comma or pipe
-      const techs = (cs.tech_stack || "").split(/[,|]/).map(t => t.trim()).filter(Boolean);
-      const techHtml = techs.map(t => {
-        const parts = t.split(':');
-        if (parts.length > 1) {
-          return `<li><strong>${parts[0]}:</strong> ${parts.slice(1).join(':')}</li>`;
-        }
-        return `<li>${t}</li>`;
-      }).join('');
-
-      // Parse multiple images
-      const images = (cs.gambar_urls || "").split(',').map(img => img.trim()).filter(Boolean);
-      let sliderHtml = "";
+    projects.forEach(p => {
+      const img = p.gambar_url ? (p.gambar_url.startsWith('http') ? p.gambar_url : `/profil/img/${p.gambar_url}`) : 'https://via.placeholder.com/800x600/12121a/e8e8ed?text=No+Image';
+      const linkHtml = p.link_project ? `<a href="${p.link_project}" target="_blank" class="showcase-card__link">Live Demo / Details</a>` : '';
       
-      const getImgSrc = (img) => img.startsWith('http') ? img : `/profil/img/${img}`;
-
-      if (images.length === 0) {
-         sliderHtml = `<img src="https://via.placeholder.com/800x600/12121a/e8e8ed?text=No+Image" alt="${cs.judul}" />`;
-      } else if (images.length === 1) {
-         sliderHtml = `<img src="${getImgSrc(images[0])}" alt="${cs.judul}" onerror="this.src='https://via.placeholder.com/800x600/12121a/e8e8ed?text=Error'" />`;
-      } else {
-         // Create mini slider HTML
-         let slides = images.map((img, idx) => `
-           <div class="cs-slide ${idx === 0 ? 'active' : ''}">
-             <img src="${getImgSrc(img)}" alt="${cs.judul} - ${idx+1}" onerror="this.src='https://via.placeholder.com/800x600/12121a/e8e8ed?text=Error'" />
-           </div>
-         `).join('');
-         
-         let dots = images.map((_, idx) => `
-           <button class="cs-dot ${idx === 0 ? 'active' : ''}" onclick="window.changeCsSlide(this, ${idx})"></button>
-         `).join('');
-
-         sliderHtml = `
-           <div class="cs-slider">
-             <div class="cs-slides-container">${slides}</div>
-             <div class="cs-slider-nav">
-               <button class="cs-nav-btn prev" onclick="window.prevCsSlide(this)"><i class="ph ph-caret-left"></i></button>
-               <div class="cs-dots">${dots}</div>
-               <button class="cs-nav-btn next" onclick="window.nextCsSlide(this)"><i class="ph ph-caret-right"></i></button>
-             </div>
-           </div>
-         `;
-      }
-
       caseStudiesContainer.innerHTML += `
-        <section class="case-study" id="case-study-${cs.id}">
-          <div class="case-study__header" data-reveal>
-            <p class="section-label">${i === 0 ? 'Featured Project' : 'Case Study'}</p>
-            <h2 class="section-title">${cs.judul}</h2>
+        <div class="showcase-card">
+          <img src="${img}" alt="${p.judul}" class="showcase-card__img" />
+          <div class="showcase-card__content">
+            <h3 class="showcase-card__title">${p.judul}</h3>
+            <p class="showcase-card__desc">${p.deskripsi || ''}</p>
+            ${linkHtml}
           </div>
+        </div>
+      `;
+    });
+  }
 
-          <div class="case-study__content" data-reveal>
-            <div class="case-study__visual" data-cursor-hover>
-              ${sliderHtml}
-            </div>
-            <div class="case-study__info">
-              <h3>${cs.judul}</h3>
-              <p class="case-study__desc">${cs.deskripsi_singkat || ''}</p>
-              <ul class="case-study__tech">
-                ${techHtml}
-              </ul>
-              <p class="case-study__desc">${cs.penjelasan_detail || ''}</p>
-              ${cs.link_project ? `
-              <a href="${cs.link_project}" target="_blank" rel="noopener noreferrer" class="btn-primary" data-cursor-hover>
-                Kunjungi Website <i class="ph ph-arrow-up-right"></i>
-              </a>` : ''}
-            </div>
-          </div>
-        </section>
+  // Render Certificates (Showcase Tab 2)
+  const certContainer = document.getElementById("dynamicCertificates");
+  if (certContainer && certificates && certificates.length > 0) {
+    certContainer.innerHTML = "";
+    certificates.forEach(c => {
+      const img = c.gambar_url ? (c.gambar_url.startsWith('http') ? c.gambar_url : `/profil/img/${c.gambar_url}`) : 'https://via.placeholder.com/800x600/12121a/e8e8ed?text=No+Image';
+      certContainer.innerHTML += `
+        <div class="cert-card">
+          <img src="${img}" alt="${c.judul}" />
+          <h3>${c.judul}</h3>
+        </div>
       `;
     });
   }
@@ -271,13 +231,15 @@ function renderDynamicContent(experiences, projects, skills, caseStudies) {
   const skillsGrid = document.getElementById("dynamicSkills");
   if (skillsGrid && skills.length > 0) {
     skillsGrid.innerHTML = "";
-    skills.forEach((skill, i) => {
-      const numStr = (i + 1).toString().padStart(2, "0");
+    skills.forEach((skill) => {
+      const iconOrLogo = skill.logo_url 
+        ? `<img src="${skill.logo_url}" alt="${skill.nama_skill}" />`
+        : `<i class="${skill.icon_class || 'ph ph-code'}"></i>`;
+      
       skillsGrid.innerHTML += `
-        <div class="services__card" data-stagger-child>
-          <div class="services__card-num">${numStr}</div>
-          <h3>${skill.nama_skill}</h3>
-          <p>Expertise in ${skill.nama_skill} with a proven track record.</p>
+        <div class="tech-card">
+          ${iconOrLogo}
+          <span>${skill.nama_skill}</span>
         </div>
       `;
     });

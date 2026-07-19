@@ -58,3 +58,14 @@ def get_blogs_public():
         return jsonify({'success': True, 'data': result or []}), 200
     except Exception as e:
         return jsonify({'success': True, 'data': []}), 200
+
+@utama_bp.route('/certificates-public', methods=['GET'])
+def get_certificates_public():
+    """Endpoint publik untuk mengambil semua certificates (tanpa token)."""
+    try:
+        db = Database()
+        query = "SELECT * FROM certificates ORDER BY id DESC"
+        result = db.execute_query(query, fetch=True)
+        return jsonify({'success': True, 'data': result or []}), 200
+    except Exception as e:
+        return jsonify({'success': True, 'data': []}), 200

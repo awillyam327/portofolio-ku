@@ -100,6 +100,7 @@ function loadPage(page) {
     case 'skills': loadSkills(); break;
     case 'contacts': loadContacts(); break;
     case 'blogs': loadBlogs(); break;
+    case 'certificates': loadCertificates(); break;
   }
 }
 
@@ -454,13 +455,13 @@ window.delProj = async function(id) {
 async function loadSkills() {
   const data = await api('/skills');
   const items = data?.data || [];
-  const rows = items.map(i => ({ id: i.id, cells: [i.nama_skill, i.icon_class || '—'] }));
+  const rows = items.map(i => ({ id: i.id, cells: [i.nama_skill, i.icon_class || '—', i.logo_url ? '✅' : '—'] }));
   contentArea.innerHTML = `
     <div class="action-bar">
       <span>${items.length} skills</span>
       <button class="btn btn--primary" id="addSkill"><i class="ph ph-plus"></i> Tambah</button>
     </div>
-    ${renderTable(['Nama Skill','Icon Class'], rows, (id) => `
+    ${renderTable(['Nama Skill','Icon Class', 'Logo'], rows, (id) => `
       <button class="btn btn--sm btn--secondary" onclick="editSkill(${id})">Edit</button>
       <button class="btn btn--sm btn--danger" onclick="delSkill(${id})">Hapus</button>
     `)}
@@ -476,11 +477,20 @@ window.editSkill = async function(id) {
   }
   openModal(id ? 'Edit Skill' : 'Tambah Skill', `
     <div class="form-group"><label>Nama Skill</label><input id="mSkill" value="${item.nama_skill||''}" required /></div>
-    <div class="form-group"><label>Icon Class (Phosphor)</label><input id="mIcon" value="${item.icon_class||''}" placeholder="ph ph-code" /></div>
+    <div class="form-group"><label>Icon Class (Phosphor) (opsional)</label><input id="mIcon" value="${item.icon_class||''}" placeholder="ph ph-code" /></div>
+    <div class="form-group"><label>Upload Logo</label><input id="mLogoFile" type="file" accept="image/*" /></div>
+    <div class="form-group"><label>URL Logo Saat Ini</label><input id="mLogoUrl" value="${item.logo_url||''}" /></div>
   `, async () => {
+    let logo_url = document.getElementById('mLogoUrl').value;
+    const file = document.getElementById('mLogoFile').files[0];
+    if (file) {
+      const upload = await apiUpload(file);
+      if (upload.url) logo_url = upload.url;
+    }
     const body = {
       nama_skill: document.getElementById('mSkill').value,
       icon_class: document.getElementById('mIcon').value,
+      logo_url: logo_url,
     };
     if (id) await api(`/skills/${id}`, { method: 'PUT', body: JSON.stringify(body) });
     else await api('/skills', { method: 'POST', body: JSON.stringify(body) });
@@ -612,6 +622,58 @@ window.delBlog = async function(id) {
   if (!confirm('Yakin ingin menghapus blog ini?')) return;
   await api(`/blogs/${id}`, { method: 'DELETE' });
   loadBlogs();
+};
+
+// ===== CERTIFICATES =====
+async function loadCertificates() {
+  const data = await api('/certificates');
+  const items = data?.data || [];
+  const rows = items.map(i => ({ id: i.id, cells: [i.judul, i.gambar_url ? '✅' : '—'] }));
+  contentArea.innerHTML = `
+    <div class="action-bar">
+      <span>${items.length} certificates</span>
+      <button class="btn btn--primary" id="addCert"><i class="ph ph-plus"></i> Tambah</button>
+    </div>
+    ${renderTable(['Judul', 'Gambar'], rows, (id) => `
+      <button class="btn btn--sm btn--secondary" onclick="editCertificate(${id})">Edit</button>
+      <button class="btn btn--sm btn--danger" onclick="delCertificate(${id})">Hapus</button>
+    `)}
+  `;
+  document.getElementById('addCert').addEventListener('click', () => editCertificate(null));
+}
+
+window.editCertificate = async function(id) {
+  let item = {};
+  if (id) {
+    const data = await api('/certificates');
+    item = (data?.data || []).find(i => i.id === id) || {};
+  }
+  openModal(id ? 'Edit Certificate' : 'Tambah Certificate', `
+    <div class="form-group"><label>Judul Sertifikat</label><input id="mCertJudul" value="${item.judul||''}" required /></div>
+    <div class="form-group"><label>Upload Gambar</label><input id="mCertFile" type="file" accept="image/*" /></div>
+    <div class="form-group"><label>URL Gambar Saat Ini</label><input id="mCertUrl" value="${item.gambar_url||''}" /></div>
+  `, async () => {
+    let gambar_url = document.getElementById('mCertUrl').value;
+    const file = document.getElementById('mCertFile').files[0];
+    if (file) {
+      const upload = await apiUpload(file);
+      if (upload.url) gambar_url = upload.url;
+    }
+    const body = {
+      judul: document.getElementById('mCertJudul').value,
+      gambar_url: gambar_url,
+    };
+    if (id) await api(`/certificates/${id}`, { method: 'PUT', body: JSON.stringify(body) });
+    else await api('/certificates', { method: 'POST', body: JSON.stringify(body) });
+    closeModal();
+    loadCertificates();
+  });
+};
+
+window.delCertificate = async function(id) {
+  if (!confirm('Yakin ingin menghapus sertifikat ini?')) return;
+  await api(`/certificates/${id}`, { method: 'DELETE' });
+  loadCertificates();
 };
 
 // ---- Initial Load ----

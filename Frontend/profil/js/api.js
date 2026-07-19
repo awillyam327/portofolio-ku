@@ -66,6 +66,11 @@ export async function getBlogs() {
   return Array.isArray(raw) ? raw : raw ? [raw] : [];
 }
 
+export async function getCertificates() {
+  const raw = unwrap(await fetchJSON("/certificates-public"));
+  return Array.isArray(raw) ? raw : raw ? [raw] : [];
+}
+
 /** Reads a value from an object trying several possible key names. */
 export function pick(obj, keys, fallback = "") {
   if (!obj) return fallback;
