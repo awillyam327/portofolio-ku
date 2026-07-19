@@ -18,12 +18,12 @@ export function initCVGenerator(data) {
 }
 
 function generateCV(data) {
-  const { jspdf } = window.jspdf;
-  if (!jspdf) {
+  if (!window.jspdf || !window.jspdf.jsPDF) {
     alert('PDF library belum dimuat. Tunggu sebentar dan coba lagi.');
     return;
   }
-  const doc = new jspdf({ unit: 'mm', format: 'a4' });
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
   const pageWidth = doc.internal.pageSize.getWidth();
   const margin = 20;
   const contentWidth = pageWidth - margin * 2;
