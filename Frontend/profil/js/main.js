@@ -3,7 +3,7 @@ import { initCursor } from "./cursor.js";
 import { initNavbar, setNavIdentity } from "./navbar.js";
 import { setProgress, setIdentity, reveal } from "./preloader.js";
 import { preloadFrames, initSequenceScroll } from "./sequence-scroll.js";
-import { initAllSections } from "./sections.js";
+import { initAllSections, initShowcaseTabs } from "./sections.js";
 import { initTerminal } from "./terminal.js";
 import { initRadarChart } from "./radar-chart.js";
 import { initCVGenerator } from "./cv-generator.js";
@@ -141,6 +141,9 @@ async function bootstrap() {
 
   // Matrix/Cyber Mode
   try { initMatrixMode(); } catch (e) { console.warn('[Matrix] Init failed:', e); }
+
+  // Showcase Tabs
+  try { initShowcaseTabs(); } catch (e) { console.warn('[Tabs] Init failed:', e); }
 }
 
 function renderDynamicContent(experiences, projects, skills, caseStudies) {

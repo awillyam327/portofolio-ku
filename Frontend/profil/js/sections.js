@@ -311,3 +311,27 @@ export function initTimelineThread() {
   
   updateScroll();
 }
+
+/* ===== Portfolio Showcase Tabs ===== */
+export function initShowcaseTabs() {
+  const tabs = document.querySelectorAll(".showcase__tab");
+  const panels = document.querySelectorAll(".showcase__panel");
+
+  if (!tabs.length) return;
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      // Remove active from all
+      tabs.forEach((t) => t.classList.remove("active"));
+      panels.forEach((p) => p.classList.remove("active"));
+
+      // Add active to clicked
+      tab.classList.add("active");
+      const targetId = tab.getAttribute("data-target");
+      const targetPanel = document.getElementById(targetId);
+      if (targetPanel) {
+        targetPanel.classList.add("active");
+      }
+    });
+  });
+}

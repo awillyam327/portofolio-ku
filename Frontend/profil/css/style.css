@@ -1618,6 +1618,83 @@ body.cyber-mode .testimonials__slide blockquote {
 }
 
 /* =========================================================
+   PORTFOLIO SHOWCASE TABS
+   ========================================================= */
+.portfolio-showcase {
+  padding: 6rem 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.showcase__header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.showcase__title {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--foreground);
+}
+.showcase__subtitle {
+  color: var(--foreground-60);
+  max-width: 600px;
+  margin: 0 auto;
+}
+.showcase__tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+.showcase__tab {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--foreground-80);
+  padding: 1rem 2.5rem;
+  border-radius: 12px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-signature);
+}
+.showcase__tab:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+.showcase__tab.active {
+  background: rgba(144, 238, 144, 0.1); /* Subtle green/blue */
+  border-color: #00ff41;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+}
+.showcase__panel {
+  display: none;
+  animation: fadeIn 0.5s ease forwards;
+}
+.showcase__panel.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+body.cyber-mode .showcase__tab.active {
+  background: rgba(0, 255, 65, 0.15);
+  border-color: #00ff41;
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+}
+
+/* Adjustments for nested sections inside showcase */
+.showcase-services { padding: 0; border: none; }
+.showcase-testimonials { padding: 0; border: none; }
+
+/* =========================================================
    BLOG SECTION
    ========================================================= */
 .blog {

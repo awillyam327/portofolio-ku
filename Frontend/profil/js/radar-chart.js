@@ -13,7 +13,13 @@ export function initRadarChart(skills) {
 
     // Responsive sizing
     const container = canvas.parentElement;
-    const size = Math.min(container.offsetWidth, 400);
+    let size = container.offsetWidth;
+    // Fallback if rendered while inside a hidden tab
+    if (size === 0) {
+      size = Math.min(window.innerWidth - 40, 400);
+    } else {
+      size = Math.min(size, 400);
+    }
     canvas.width = size * 2;  // HiDPI
     canvas.height = size * 2;
     canvas.style.width = size + 'px';

@@ -85,6 +85,88 @@
           <h2 class="sequence__text sequence__text--statement" id="seqText2" data-hero-role>Portofolio</h2>
           <p class="sequence__text sequence__text--eyebrow" id="seqText3">S1 Information System</p>
         </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- PORTFOLIO SHOWCASE (TABS)                    -->
+    <!-- ============================================ -->
+    <section class="portfolio-showcase" id="portfolio">
+      <div class="showcase__header" data-reveal>
+        <h2 class="section-title showcase__title">Portfolio Showcase</h2>
+        <p class="showcase__subtitle section-label">Explore my journey through projects, certifications, and technical expertise.</p>
+      </div>
+
+      <div class="showcase__tabs" data-reveal>
+        <button class="showcase__tab active" data-target="tab-projects">
+          <i class="ph ph-code"></i> Projects
+        </button>
+        <button class="showcase__tab" data-target="tab-certificates">
+          <i class="ph ph-certificate"></i> Certificates
+        </button>
+        <button class="showcase__tab" data-target="tab-skills">
+          <i class="ph ph-stack"></i> Tech Stack
+        </button>
+      </div>
+
+      <div class="showcase__content">
+        <!-- TAB 1: PROJECTS -->
+        <div class="showcase__panel active" id="tab-projects">
+          <div id="dynamicCaseStudies">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+
+        <!-- TAB 2: CERTIFICATES -->
+        <div class="showcase__panel" id="tab-certificates">
+          <section class="testimonials showcase-testimonials">
+            <div class="testimonials__slider">
+              <div class="testimonials__track">
+                <div class="testimonials__slide">
+                  <blockquote>
+                    &ldquo;E-sports Champion: Officially awarded by Kejurprov Jawa Timur, Piala Gubernur Jawa Timur, Piala
+                    Ganjar Caruban, and School Winter Cup Indonesia for PUBG Mobile.&rdquo;
+                  </blockquote>
+                  <cite>— Professional E-Sports Athlete</cite>
+                </div>
+                <div class="testimonials__slide">
+                  <blockquote>
+                    &ldquo;National Finalist at the Veteran Business Championship 2025. Recognized for innovative business
+                    strategies and presentation.&rdquo;
+                  </blockquote>
+                  <cite>— Veteran Business Championship</cite>
+                </div>
+                <div class="testimonials__slide">
+                  <blockquote>
+                    &ldquo;Event Leadership: Head of Committee for the National Webinar ISG UKSW 2025 (Mastering GEN AI
+                    Audits) &amp; Event Coordinator for National Seminar 2026 (AI CAREER HACKS).&rdquo;
+                  </blockquote>
+                  <cite>— ISACA Student Group UKSW</cite>
+                </div>
+              </div>
+              <div class="testimonials__dots">
+                <button class="testimonials__dot active" aria-label="Slide 1"></button>
+                <button class="testimonials__dot" aria-label="Slide 2"></button>
+                <button class="testimonials__dot" aria-label="Slide 3"></button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- TAB 3: SKILLS -->
+        <div class="showcase__panel" id="tab-skills">
+          <section class="services showcase-services">
+            <div class="services__content">
+              <div class="services__grid" id="dynamicSkills">
+                <!-- Injected via JS -->
+              </div>
+              <div class="services__radar">
+                <canvas id="radarCanvas"></canvas>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
     </section>
 
@@ -153,72 +235,7 @@
       </div>
     </section>
 
-    <!-- ============================================ -->
-    <!-- FEATURED PROJECT (PORTFOLIO CASE STUDY)      -->
-    <!-- ============================================ -->
-    <div id="dynamicCaseStudies">
-      <!-- Injected via JS -->
-    </div>
-
-    <!-- ============================================ -->
-    <!-- SKILLS                                       -->
-    <!-- ============================================ -->
-    <section class="services" id="services">
-      <div class="services__header" data-reveal>
-        <p class="section-label">Core Competencies</p>
-        <h2 class="section-title">Skills &amp; Expertise</h2>
-      </div>
-
-      <div class="services__content">
-        <div class="services__grid" id="dynamicSkills" data-stagger>
-          <!-- Injected via JS -->
-        </div>
-        <div class="services__radar" data-reveal>
-          <canvas id="radarCanvas"></canvas>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================ -->
-    <!-- AWARDS & CERTIFICATIONS                      -->
-    <!-- ============================================ -->
-    <section class="testimonials" data-reveal>
-      <div class="testimonials__header">
-        <p class="section-label">Achievements</p>
-        <h2 class="section-title">Awards &amp; Certifications</h2>
-      </div>
-
-      <div class="testimonials__slider">
-        <div class="testimonials__track">
-          <div class="testimonials__slide">
-            <blockquote>
-              &ldquo;E-sports Champion: Officially awarded by Kejurprov Jawa Timur, Piala Gubernur Jawa Timur, Piala
-              Ganjar Caruban, and School Winter Cup Indonesia for PUBG Mobile.&rdquo;
-            </blockquote>
-            <cite>— Professional E-Sports Athlete</cite>
-          </div>
-          <div class="testimonials__slide">
-            <blockquote>
-              &ldquo;National Finalist at the Veteran Business Championship 2025. Recognized for innovative business
-              strategies and presentation.&rdquo;
-            </blockquote>
-            <cite>— Veteran Business Championship</cite>
-          </div>
-          <div class="testimonials__slide">
-            <blockquote>
-              &ldquo;Event Leadership: Head of Committee for the National Webinar ISG UKSW 2025 (Mastering GEN AI
-              Audits) &amp; Event Coordinator for National Seminar 2026 (AI CAREER HACKS).&rdquo;
-            </blockquote>
-            <cite>— ISACA Student Group UKSW</cite>
-          </div>
-        </div>
-        <div class="testimonials__dots">
-          <button class="testimonials__dot active" aria-label="Slide 1"></button>
-          <button class="testimonials__dot" aria-label="Slide 2"></button>
-          <button class="testimonials__dot" aria-label="Slide 3"></button>
-        </div>
-      </div>
-    </section>
+    <!-- Removed sections (moved to Portfolio Showcase tabs) -->
 
     <!-- ============================================ -->
     <!-- BLOG / ARTICLES                              -->
