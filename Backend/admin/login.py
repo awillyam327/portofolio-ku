@@ -4,6 +4,8 @@ from model import Database
 import jwt
 import datetime
 import logging
+import os
+import resend
 from functools import wraps
 from config import Config
 
@@ -136,3 +138,95 @@ def check_auth(current_user):
             'role': session.get('role')
         }
     }), 200
+
+@login_bp.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    try:
+        data = request.get_json()
+        username = data.get('username', '').strip()
+        if not username:
+            return jsonify({'error': 'Username wajib diisi'}), 400
+        
+        db = Database()
+        query = """
+            SELECT u.id, p.email 
+            FROM users u
+            JOIN profiles p ON u.id = p.user_id
+            WHERE u.username = %s
+        """
+        user = db.fetch_one(query, (username,))
+        
+        if not user or not user.get('email'):
+            # Return success anyway to prevent username enumeration, but log it
+            return jsonify({'message': 'Jika username valid, link reset password telah dikirim ke email yang terdaftar.'}), 200
+            
+        email = user['email']
+        
+        # Generate reset token (1 hour expiration)
+        token = jwt.encode({
+            'reset_password': user['id'],
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+        }, Config.SECRET_KEY, algorithm='HS256')
+        
+        # Determine base URL for reset link
+        host = request.headers.get('Host', '')
+        protocol = 'https' if request.is_secure or 'vercel' in host else 'http'
+        reset_link = f"{protocol}://{host}/reset-password?token={token}"
+        
+        resend.api_key = os.environ.get('RESEND_API_KEY')
+        if not resend.api_key:
+            return jsonify({'error': 'Resend API key belum dikonfigurasi'}), 500
+            
+        # Send email via Resend
+        params = {
+            "from": "onboarding@resend.dev",
+            "to": [email],
+            "subject": "Reset Password Admin Portfolio",
+            "html": f"""
+            <h2>Reset Password</h2>
+            <p>Anda menerima email ini karena ada permintaan reset password untuk akun admin Anda.</p>
+            <p>Silakan klik link di bawah ini untuk mengganti password Anda (berlaku selama 1 jam):</p>
+            <p><a href="{reset_link}" style="padding:10px 20px; background:#00ff41; color:#000; text-decoration:none; border-radius:5px; font-weight:bold;">Reset Password</a></p>
+            <p>Jika Anda tidak meminta reset, abaikan saja email ini.</p>
+            """
+        }
+        email_res = resend.Emails.send(params)
+        logger.info(f"Forgot password email sent to {email}. Resend ID: {email_res}")
+        
+        return jsonify({'message': 'Jika username valid, link reset password telah dikirim ke email yang terdaftar.'}), 200
+        
+    except Exception as e:
+        logger.error(f"[FORGOT PASSWORD ERROR] {str(e)}")
+        return jsonify({'error': 'Terjadi kesalahan pada server saat mengirim email'}), 500
+
+@login_bp.route('/reset-password', methods=['POST'])
+def reset_password():
+    try:
+        data = request.get_json()
+        token = data.get('token')
+        new_password = data.get('new_password')
+        
+        if not token or not new_password:
+            return jsonify({'error': 'Token dan password baru wajib diisi'}), 400
+            
+        # Verify token
+        try:
+            payload = jwt.decode(token, Config.SECRET_KEY, algorithms=['HS256'])
+            user_id = payload.get('reset_password')
+            if not user_id:
+                raise ValueError("Token tidak valid")
+        except jwt.ExpiredSignatureError:
+            return jsonify({'error': 'Token reset password telah kadaluarsa. Silakan request ulang.'}), 400
+        except Exception:
+            return jsonify({'error': 'Token reset password tidak valid.'}), 400
+            
+        # Update password
+        db = Database()
+        hashed_pw = generate_password_hash(new_password)
+        db.execute_query("UPDATE users SET password_hash = %s WHERE id = %s", (hashed_pw, user_id))
+        
+        return jsonify({'message': 'Password berhasil diubah. Silakan login dengan password baru.'}), 200
+        
+    except Exception as e:
+        logger.error(f"[RESET PASSWORD ERROR] {str(e)}")
+        return jsonify({'error': 'Terjadi kesalahan pada server saat mereset password'}), 500

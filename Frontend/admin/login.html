@@ -29,6 +29,30 @@
           <span>Masuk</span>
         </button>
         <p class="login-error" id="loginError"></p>
+        <div style="text-align: center; margin-top: 1rem;">
+          <a href="#" id="forgotBtn" style="color: var(--primary); text-decoration: none; font-size: 0.9rem;">Lupa Password?</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div class="modal-overlay" id="forgotModal" style="display: none;">
+    <div class="modal" style="display: block; max-width: 400px; padding: 2rem;">
+      <div class="modal__header">
+        <h3>Lupa Password</h3>
+        <button class="modal__close" id="forgotClose">&times;</button>
+      </div>
+      <form id="forgotForm" class="modal__body">
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
+          Masukkan username Anda. Link reset password akan dikirim ke email yang terdaftar di profil Anda.
+        </p>
+        <div class="form-group">
+          <label for="forgotUsername">Username</label>
+          <input type="text" id="forgotUsername" placeholder="Masukkan username" required />
+        </div>
+        <button type="submit" class="btn btn--primary" id="btnForgot" style="width: 100%;">Kirim Link Reset</button>
+        <p id="forgotMessage" style="margin-top: 1rem; font-size: 0.9rem; text-align: center;"></p>
       </form>
     </div>
   </div>
@@ -60,13 +84,64 @@
           localStorage.setItem('admin_name', data.user.username);
           window.location.href = '/admin/dashboard.html';
         } else {
-          errorEl.textContent = data.error || 'Login gagal.';
+          errorEl.textContent = data.error || 'Terjadi kesalahan';
         }
       } catch (err) {
-        errorEl.textContent = 'Koneksi gagal. Coba lagi.';
+        errorEl.textContent = 'Gagal menghubungi server';
       } finally {
         btn.disabled = false;
         btn.querySelector('span').textContent = 'Masuk';
+      }
+    });
+
+    // Forgot Password Logic
+    const forgotBtn = document.getElementById('forgotBtn');
+    const forgotModal = document.getElementById('forgotModal');
+    const forgotClose = document.getElementById('forgotClose');
+    const forgotForm = document.getElementById('forgotForm');
+    const btnForgot = document.getElementById('btnForgot');
+    const forgotMessage = document.getElementById('forgotMessage');
+
+    forgotBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      forgotModal.style.display = 'flex';
+      forgotMessage.textContent = '';
+      forgotMessage.style.color = '';
+    });
+
+    forgotClose.addEventListener('click', () => {
+      forgotModal.style.display = 'none';
+    });
+
+    forgotForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      forgotMessage.textContent = '';
+      btnForgot.disabled = true;
+      btnForgot.textContent = 'Mengirim...';
+
+      const username = document.getElementById('forgotUsername').value.trim();
+
+      try {
+        const res = await fetch('/api/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          forgotMessage.style.color = 'var(--primary)';
+          forgotMessage.textContent = data.message;
+        } else {
+          forgotMessage.style.color = 'var(--danger)';
+          forgotMessage.textContent = data.error || 'Terjadi kesalahan';
+        }
+      } catch (err) {
+        forgotMessage.style.color = 'var(--danger)';
+        forgotMessage.textContent = 'Gagal menghubungi server';
+      } finally {
+        btnForgot.disabled = false;
+        btnForgot.textContent = 'Kirim Link Reset';
       }
     });
   </script>

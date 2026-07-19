@@ -72,6 +72,10 @@ def create_app():
     def admin_pages(filename):
         return send_from_directory(os.path.join(app.root_path, 'Frontend', 'admin'), filename)
     
+    @app.route('/reset-password')
+    def reset_password_page():
+        return send_from_directory(os.path.join(app.root_path, 'Frontend', 'admin'), 'reset-password.html')
+    
     @app.route('/profil/<path:filename>')
     def profil_pages(filename):
         return send_from_directory(os.path.join(app.root_path, 'Frontend', 'profil'), filename)
