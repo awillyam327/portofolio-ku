@@ -40,10 +40,15 @@
   <!-- Floating navbar -->
   <header class="navbar">
     <a href="#home" class="navbar__logo">AWL<span>.</span></a>
-    <button class="navbar__toggle" id="navToggle" aria-label="Buka menu" aria-expanded="false">
-      <span></span>
-      <span></span>
-    </button>
+    <div class="navbar__actions">
+      <button class="matrix-toggle" id="matrixToggle" aria-label="Toggle Cyber Mode" title="Cyber Mode">
+        <i class="ph ph-terminal"></i>
+      </button>
+      <button class="navbar__toggle" id="navToggle" aria-label="Buka menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
   </header>
 
   <!-- Fullscreen nav overlay -->
@@ -139,6 +144,13 @@
           <span class="about__stat-label">Year Teaching Assistant</span>
         </div>
       </div>
+      <div class="about__cv" data-reveal>
+        <button class="btn-cv" id="downloadCvBtn" data-cursor-hover>
+          <i class="ph ph-file-pdf"></i>
+          <span>Download CV</span>
+          <i class="ph ph-download-simple"></i>
+        </button>
+      </div>
     </section>
 
     <!-- ============================================ -->
@@ -157,8 +169,13 @@
         <h2 class="section-title">Skills &amp; Expertise</h2>
       </div>
 
-      <div class="services__grid" id="dynamicSkills" data-stagger>
-        <!-- Injected via JS -->
+      <div class="services__content">
+        <div class="services__grid" id="dynamicSkills" data-stagger>
+          <!-- Injected via JS -->
+        </div>
+        <div class="services__radar" data-reveal>
+          <canvas id="radarCanvas"></canvas>
+        </div>
       </div>
     </section>
 
@@ -274,11 +291,13 @@
       <div class="footer__bottom">
         <p>&copy; 2026 Arthur Willyam Liang. All rights reserved.</p>
         <p class="footer__credit">Crafted with precision &amp; passion.</p>
+        <p class="footer__easter-egg">💻 Press <kbd>Ctrl</kbd> + <kbd>`</kbd> for a surprise</p>
       </div>
     </footer>
   </main>
 
   <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
   <script type="module" src="/profil/js/main.js"></script>
 </body>
 

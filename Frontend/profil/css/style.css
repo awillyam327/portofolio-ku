@@ -1309,3 +1309,310 @@ img {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* =========================================================
+   PREMIUM FEATURE 1: Terminal Easter Egg
+   ========================================================= */
+.terminal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease-signature);
+}
+.terminal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.terminal {
+  width: min(90vw, 700px);
+  max-height: 80vh;
+  background: #0d1117;
+  border: 1px solid rgba(0, 255, 65, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(0, 255, 65, 0.1), inset 0 0 60px rgba(0, 0, 0, 0.5);
+  transform: scale(0.95) translateY(20px);
+  transition: transform 0.4s var(--ease-signature);
+}
+.terminal-overlay.open .terminal {
+  transform: scale(1) translateY(0);
+}
+
+.terminal__header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: #161b22;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.terminal__dots {
+  display: flex;
+  gap: 6px;
+}
+.terminal__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.terminal__dot--red { background: #ff5f57; }
+.terminal__dot--yellow { background: #febc2e; }
+.terminal__dot--green { background: #28c840; }
+
+.terminal__title {
+  flex: 1;
+  text-align: center;
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+.terminal__close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 4px;
+}
+.terminal__close:hover { color: #ff5f57; }
+
+.terminal__body {
+  padding: 16px;
+  max-height: 60vh;
+  overflow-y: auto;
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: #c9d1d9;
+}
+.terminal__body::-webkit-scrollbar { width: 6px; }
+.terminal__body::-webkit-scrollbar-track { background: transparent; }
+.terminal__body::-webkit-scrollbar-thumb { background: rgba(0, 255, 65, 0.2); border-radius: 3px; }
+
+.terminal__input-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+.terminal__prompt {
+  color: #00ff41;
+  white-space: nowrap;
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 0.8rem;
+}
+.terminal__input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 0.8rem;
+  caret-color: #00ff41;
+}
+
+.terminal__ascii {
+  color: #00ff41;
+  font-size: 0.55rem;
+  line-height: 1.1;
+}
+.terminal__line { margin-bottom: 2px; }
+
+/* Terminal color utilities */
+.t-green { color: #00ff41; }
+.t-cyan { color: #58a6ff; }
+.t-red { color: #ff7b72; }
+.t-yellow { color: #d29922; }
+.t-white { color: #f0f6fc; }
+.t-dim { color: #8b949e; }
+
+/* =========================================================
+   PREMIUM FEATURE 2: Radar Chart
+   ========================================================= */
+.services__content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.services__radar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+.services__radar canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .services__content {
+    grid-template-columns: 1fr;
+  }
+  .services__radar {
+    order: -1;
+    padding: 1rem 0;
+  }
+}
+
+/* =========================================================
+   PREMIUM FEATURE 3: Download CV Button
+   ========================================================= */
+.about__cv {
+  grid-column: 1 / -1;
+  margin-top: 1.5rem;
+}
+.btn-cv {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 2rem;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-signature);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+}
+.btn-cv:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.5);
+}
+.btn-cv:active {
+  transform: translateY(0);
+}
+.btn-cv i {
+  font-size: 1.2rem;
+}
+
+/* =========================================================
+   PREMIUM FEATURE 4: Matrix / Cyber Mode
+   ========================================================= */
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.matrix-toggle {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--foreground-60);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+.matrix-toggle:hover {
+  border-color: #00ff41;
+  color: #00ff41;
+  background: rgba(0, 255, 65, 0.1);
+}
+.matrix-toggle.active {
+  background: rgba(0, 255, 65, 0.15);
+  border-color: #00ff41;
+  color: #00ff41;
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+}
+
+.matrix-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+.matrix-canvas.visible {
+  opacity: 0.15;
+}
+
+/* Cyber Mode global overrides */
+body.cyber-mode {
+  --foreground: #00ff41;
+  --foreground-60: rgba(0, 255, 65, 0.6);
+  --foreground-40: rgba(0, 255, 65, 0.4);
+  --foreground-15: rgba(0, 255, 65, 0.15);
+}
+body.cyber-mode .navbar__logo {
+  color: #00ff41;
+}
+body.cyber-mode .navbar__logo span {
+  color: #0f0;
+}
+body.cyber-mode .section-label {
+  color: #00ff41;
+}
+body.cyber-mode .section-title {
+  text-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+}
+body.cyber-mode .services__card {
+  border-color: rgba(0, 255, 65, 0.15);
+}
+body.cyber-mode .services__card:hover {
+  border-color: rgba(0, 255, 65, 0.4);
+  box-shadow: 0 0 30px rgba(0, 255, 65, 0.1);
+}
+body.cyber-mode .btn-primary,
+body.cyber-mode .btn-cv {
+  background: linear-gradient(135deg, #00ff41, #00cc33);
+  color: #000;
+  box-shadow: 0 4px 20px rgba(0, 255, 65, 0.3);
+}
+body.cyber-mode .contact__submit {
+  background: #00ff41;
+  color: #000;
+}
+body.cyber-mode .footer__big span {
+  -webkit-text-stroke-color: rgba(0, 255, 65, 0.2);
+}
+body.cyber-mode .about__stat-num {
+  color: #00ff41;
+}
+body.cyber-mode .contact__big-text {
+  text-shadow: 0 0 40px rgba(0, 255, 65, 0.2);
+}
+body.cyber-mode .testimonials__slide blockquote {
+  border-left-color: #00ff41;
+}
+
+/* =========================================================
+   PREMIUM FEATURE 5: Footer Easter Egg hint
+   ========================================================= */
+.footer__easter-egg {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--foreground-40);
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+.footer__easter-egg:hover {
+  opacity: 1;
+}
+.footer__easter-egg kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.7rem;
+}

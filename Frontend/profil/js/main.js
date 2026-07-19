@@ -4,6 +4,10 @@ import { initNavbar, setNavIdentity } from "./navbar.js";
 import { setProgress, setIdentity, reveal } from "./preloader.js";
 import { preloadFrames, initSequenceScroll } from "./sequence-scroll.js";
 import { initAllSections } from "./sections.js";
+import { initTerminal } from "./terminal.js";
+import { initRadarChart } from "./radar-chart.js";
+import { initCVGenerator } from "./cv-generator.js";
+import { initMatrixMode } from "./matrix.js";
 
 const FALLBACK_IDENTITY = { name: "Arthur Willyam Liang", role: "Portofolio" };
 const loadingPercentEl = document.getElementById("sequenceLoadingPercent");
@@ -121,6 +125,21 @@ async function bootstrap() {
 
   // Initialize all content section animations AFTER DOM is injected
   initAllSections();
+
+  // ---- Premium Features ----
+  const allData = { profil, skills, experiences, projects };
+
+  // Terminal Easter Egg (Ctrl + `)
+  try { initTerminal(allData); } catch (e) { console.warn('[Terminal] Init failed:', e); }
+
+  // Radar Chart for Skills
+  try { initRadarChart(skills); } catch (e) { console.warn('[RadarChart] Init failed:', e); }
+
+  // Auto CV Generator
+  try { initCVGenerator(allData); } catch (e) { console.warn('[CV] Init failed:', e); }
+
+  // Matrix/Cyber Mode
+  try { initMatrixMode(); } catch (e) { console.warn('[Matrix] Init failed:', e); }
 }
 
 function renderDynamicContent(experiences, projects, skills, caseStudies) {
