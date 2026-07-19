@@ -156,7 +156,7 @@ INSERT INTO experiences (user_id, posisi, perusahaan, durasi, deskripsi) VALUES
 (1, 'President of ISACA Student Group', 'UKSW', '2026 - Present', 'Leading overall organization, determining strategic direction, and overseeing all work programs at UKSW.'),
 (1, 'Vice President of ISACA Student Group', 'UKSW', '2025 - 2026', 'Managed internal organization, maintained operational stability, and coordinated across divisions.'),
 (1, 'Teaching Assistant', 'UKSW', '2024 - 2025', 'Discrete Mathematics and Basic Programming for Information Systems at UKSW. Trusted since the first year of college.'),
-(1, 'Photography Lead & Trainer', 'GBI Salatiga & GKI Ambarawa', '2022 - Present', 'Managed visual documentation and provided technical photography training for GBI Salatiga & GKI Ambarawa.');
+(1, 'Photography Lead & Trainer', 'Bethany Indonesia Salatiga & GKI Ambarawa', '2022 - Present', 'Managed visual documentation and provided technical photography training for Bethany Indonesia Salatiga & GKI Ambarawa.');
 
 -- ---- Projects ----
 INSERT INTO projects (user_id, judul, deskripsi, gambar_url, link_project) VALUES
