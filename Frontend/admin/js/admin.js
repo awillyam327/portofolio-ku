@@ -112,7 +112,7 @@ async function loadDashboard() {
     <div class="stats-grid">
       <div class="stat-card"><h4>Pengalaman</h4><div class="stat-value">${stats.experiences_count || 0}</div></div>
       <div class="stat-card"><h4>Proyek</h4><div class="stat-value">${stats.projects_count || 0}</div></div>
-      <div class="stat-card"><h4>Skills</h4><div class="stat-value">${stats.skills_count || 0}</div></div>
+      <div class="stat-card"><h4>Tech Stack</h4><div class="stat-value">${stats.skills_count || 0}</div></div>
     </div>
     <p style="color:var(--text-muted)">Selamat datang di Admin Panel, <strong>${adminName}</strong>. Gunakan menu di sebelah kiri untuk mengelola data portofolio Anda.</p>
   `;
@@ -458,7 +458,7 @@ async function loadSkills() {
   const rows = items.map(i => ({ id: i.id, cells: [i.nama_skill, i.icon_class || '—', i.logo_url ? '✅' : '—'] }));
   contentArea.innerHTML = `
     <div class="action-bar">
-      <span>${items.length} skills</span>
+      <span>${items.length} Tech Stack</span>
       <button class="btn btn--primary" id="addSkill"><i class="ph ph-plus"></i> Tambah</button>
     </div>
     ${renderTable(['Nama Skill','Icon Class', 'Logo'], rows, (id) => `
