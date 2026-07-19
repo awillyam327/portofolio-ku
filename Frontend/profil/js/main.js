@@ -5,7 +5,7 @@ import { setProgress, setIdentity, reveal } from "./preloader.js";
 import { preloadFrames, initSequenceScroll } from "./sequence-scroll.js";
 import { initAllSections } from "./sections.js";
 
-const FALLBACK_IDENTITY = { name: "Arthur Willyam Liang", role: "Cybersecurity" };
+const FALLBACK_IDENTITY = { name: "Arthur Willyam Liang", role: "Portofolio" };
 const loadingPercentEl = document.getElementById("sequenceLoadingPercent");
 const loadingEl = document.getElementById("sequenceLoading");
 
