@@ -390,7 +390,6 @@ img {
   z-index: 20;
   padding: 8rem 2rem;
   background: var(--void);
-  margin-top: -100vh;
 }
 
 .works__header {
@@ -1621,9 +1620,13 @@ body.cyber-mode .testimonials__slide blockquote {
    PORTFOLIO SHOWCASE TABS
    ========================================================= */
 .portfolio-showcase {
+  position: relative;
+  z-index: 20;
   padding: 6rem 5%;
   max-width: 1200px;
   margin: 0 auto;
+  margin-top: -100vh;
+  background: var(--void);
 }
 .showcase__header {
   text-align: center;
