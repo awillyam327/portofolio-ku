@@ -9,7 +9,7 @@
  * animated gradient with floating particles that responds to scroll.
  */
 const FRAME_COUNT = 192;
-const getFrameSrc = (index) => `/profil/sequence/${String(index).padStart(4, "0")}.webp`;
+const getFrameSrc = (index) => `https://res.cloudinary.com/daknwopl3/image/upload/portfolio/sequence/${String(index).padStart(4, "0")}.webp`;
 
 const images = new Array(FRAME_COUNT);
 let loadedCount = 0;

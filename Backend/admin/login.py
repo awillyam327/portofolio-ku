@@ -154,7 +154,8 @@ def forgot_password():
             JOIN profiles p ON u.id = p.user_id
             WHERE u.username = %s
         """
-        user = db.fetch_one(query, (username,))
+        results = db.execute_query(query, (username,), fetch=True)
+        user = results[0] if results else None
         
         if not user or not user.get('email'):
             # Return success anyway to prevent username enumeration, but log it
