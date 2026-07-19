@@ -20,7 +20,7 @@ cloudinary.config(
 db = Database()
 
 def upload_image(file_path, folder_name, public_id=None):
-    if not os.path.exists(file_path):
+    if not file_path.startswith('http') and not os.path.exists(file_path):
         print(f"Skipping {file_path}, does not exist.")
         return None
     try:
@@ -33,14 +33,19 @@ def upload_image(file_path, folder_name, public_id=None):
         print(f"Error uploading {file_path}: {e}")
         return None
 
+def extract_filename(url_or_path):
+    if url_or_path.startswith('http'):
+        return url_or_path.split('/')[-1]
+    return url_or_path
+
 def migrate_projects():
     print("Migrating Projects...")
     projects = db.execute_query("SELECT id, gambar_url FROM projects", fetch=True)
     for p in projects:
         img = p['gambar_url']
-        if img and not img.startswith('http'):
-            local_path = os.path.join('Frontend', 'profil', 'img', img)
-            url = upload_image(local_path, "portfolio/projects")
+        if img:
+            # Pass the URL directly to cloudinary
+            url = upload_image(img, "portfolio/projects")
             if url:
                 db.execute_query("UPDATE projects SET gambar_url = %s WHERE id = %s", (url, p['id']))
                 print(f"Project {p['id']} image updated.")
@@ -50,18 +55,13 @@ def migrate_case_studies():
     cases = db.execute_query("SELECT id, gambar_urls FROM case_studies", fetch=True)
     for c in cases:
         img = c['gambar_urls']
-        if img and not img.startswith('http'):
-            # Only single image expected based on current data, but split just in case
+        if img:
             images = [i.strip() for i in img.split(',')]
             new_urls = []
             for im in images:
-                if not im.startswith('http'):
-                    local_path = os.path.join('Frontend', 'profil', 'img', im)
-                    url = upload_image(local_path, "portfolio/projects")
-                    if url:
-                        new_urls.append(url)
-                    else:
-                        new_urls.append(im)
+                url = upload_image(im, "portfolio/projects")
+                if url:
+                    new_urls.append(url)
                 else:
                     new_urls.append(im)
             
@@ -75,11 +75,8 @@ def migrate_certificates():
     certs = db.execute_query("SELECT id, gambar_url FROM certificates", fetch=True)
     for c in certs:
         img = c['gambar_url']
-        if img and not img.startswith('http'):
-            local_path = os.path.join('Frontend', 'admin', 'img', img)
-            if not os.path.exists(local_path):
-                pass
-            url = upload_image(local_path, "portfolio/certificates")
+        if img:
+            url = upload_image(img, "portfolio/certificates")
             if url:
                 db.execute_query("UPDATE certificates SET gambar_url = %s WHERE id = %s", (url, c['id']))
                 print(f"Certificate {c['id']} image updated.")
