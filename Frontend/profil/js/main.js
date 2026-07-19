@@ -185,15 +185,7 @@ function renderDynamicContent(experiences, projects, skills, caseStudies, blogs,
     });
   }
 
-  // 1. Render Gallery (Projects)
-  const gallery = document.getElementById("dynamicGallery");
-  if (gallery && projects.length > 0) {
-    gallery.innerHTML = "";
-    projects.forEach(p => {
-      const img = p.gambar_url ? `/profil/img/${p.gambar_url}` : '/profil/img/others2.png';
-      gallery.innerHTML += `<div class="works__gallery-slide" style="background-image: url('${img}?v=2');"></div>`;
-    });
-  }
+
 
   // 2. Render Timeline (Experiences)
   const timeline = document.getElementById("worksTimeline");
