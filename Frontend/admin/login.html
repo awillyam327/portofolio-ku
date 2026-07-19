@@ -127,18 +127,19 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username })
         });
-        const data = await res.json();
+        const result = await res.json();
 
         if (res.ok) {
           forgotMessage.style.color = 'var(--primary)';
-          forgotMessage.textContent = data.message;
+          forgotMessage.textContent = result.message;
         } else {
-          forgotMessage.style.color = 'var(--danger)';
-          forgotMessage.textContent = data.error || 'Terjadi kesalahan';
+          forgotMessage.style.color = '#ff3333'; // Red for error
+          forgotMessage.textContent = result.error || 'Terjadi kesalahan pada server saat mengirim email';
         }
-      } catch (err) {
-        forgotMessage.style.color = 'var(--danger)';
-        forgotMessage.textContent = 'Gagal menghubungi server';
+      } catch (error) {
+        forgotMessage.style.color = '#ff3333'; // Red for error
+        forgotMessage.textContent = 'Terjadi kesalahan koneksi jaringan';
+        console.error(error);
       } finally {
         btnForgot.disabled = false;
         btnForgot.textContent = 'Kirim Link Reset';

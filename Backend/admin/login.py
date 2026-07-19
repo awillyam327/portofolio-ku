@@ -191,8 +191,12 @@ def forgot_password():
             <p>Jika Anda tidak meminta reset, abaikan saja email ini.</p>
             """
         }
-        email_res = resend.Emails.send(params)
-        logger.info(f"Forgot password email sent to {email}. Resend ID: {email_res}")
+        try:
+            email_res = resend.Emails.send(params)
+            logger.info(f"Forgot password email sent to {email}. Resend ID: {email_res}")
+        except Exception as e:
+            logger.error(f"[RESEND API ERROR] {str(e)}")
+            return jsonify({'error': f"Gagal mengirim email: {str(e)}"}), 500
         
         return jsonify({'message': 'Jika username valid, link reset password telah dikirim ke email yang terdaftar.'}), 200
         
