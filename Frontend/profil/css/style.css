@@ -1616,3 +1616,91 @@ body.cyber-mode .testimonials__slide blockquote {
   font-family: 'Fira Code', monospace;
   font-size: 0.7rem;
 }
+
+/* =========================================================
+   BLOG SECTION
+   ========================================================= */
+.blog {
+  padding: 10rem 0;
+  border-top: 1px solid var(--border-color);
+}
+.blog__header {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+.blog__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+}
+.blog__card {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.4s var(--ease-signature), box-shadow 0.4s var(--ease-signature);
+}
+.blog__card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255,255,255,0.15);
+}
+.blog__image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  border-bottom: 1px solid var(--border-color);
+}
+.blog__content {
+  padding: 1.5rem;
+}
+.blog__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  font-family: var(--font-body);
+}
+.blog__category {
+  color: var(--foreground-80);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+.blog__date {
+  color: var(--foreground-40);
+}
+.blog__title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+.blog__excerpt {
+  color: var(--foreground-60);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+.blog__readmore {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fff;
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: gap 0.3s var(--ease-signature);
+}
+.blog__readmore:hover {
+  gap: 0.75rem;
+  text-decoration: underline;
+}
+
+body.cyber-mode .blog__card { border-color: rgba(0, 255, 65, 0.15); }
+body.cyber-mode .blog__card:hover { border-color: #00ff41; box-shadow: 0 0 20px rgba(0, 255, 65, 0.15); }
+body.cyber-mode .blog__category { background: rgba(0, 255, 65, 0.1); color: #00ff41; }
+body.cyber-mode .blog__readmore { color: #00ff41; }

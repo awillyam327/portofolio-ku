@@ -99,6 +99,7 @@ function loadPage(page) {
     case 'case_studies': loadCaseStudies(); break;
     case 'skills': loadSkills(); break;
     case 'contacts': loadContacts(); break;
+    case 'blogs': loadBlogs(); break;
   }
 }
 
@@ -514,6 +515,103 @@ window.delContact = async function(id) {
   if (!confirm('Yakin ingin menghapus pesan ini?')) return;
   await api(`/admin/contacts/${id}`, { method: 'DELETE' });
   loadContacts();
+};
+
+// ===== BLOGS =====
+async function loadBlogs() {
+  let items = [];
+  try {
+    const data = await api('/blogs');
+    items = data?.data || [];
+  } catch { items = []; }
+
+  contentArea.innerHTML = `
+    <div class="header-action">
+      <h2>Daftar Blog / Write-ups</h2>
+      <button class="btn btn--primary" onclick="addBlog()"><i class="ph ph-plus"></i> Tambah Blog</button>
+    </div>
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Judul</th>
+            <th>Kategori</th>
+            <th>Tanggal</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${items.map(b => `
+            <tr>
+              <td>${b.judul || ''}</td>
+              <td><span class="badge">${b.kategori || 'General'}</span></td>
+              <td>${new Date(b.created_at).toLocaleDateString('id-ID')}</td>
+              <td>
+                <button class="btn btn--sm btn--secondary" onclick='editBlog(${JSON.stringify(b).replace(/'/g, "&#39;")})'><i class="ph ph-pencil"></i></button>
+                <button class="btn btn--sm btn--danger" onclick="delBlog(${b.id})"><i class="ph ph-trash"></i></button>
+              </td>
+            </tr>
+          `).join('')}
+          ${items.length === 0 ? '<tr><td colspan="4" class="empty-state">Belum ada blog. Mulai menulis!</td></tr>' : ''}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function getBlogFields(b = {}) {
+  return `
+    <div class="form-group">
+      <label>Judul</label>
+      <input id="mBlogJudul" value="${b.judul || ''}" placeholder="Judul artikel..." required />
+    </div>
+    <div class="form-group">
+      <label>Kategori</label>
+      <input id="mBlogKategori" value="${b.kategori || ''}" placeholder="Cybersecurity, Leadership, Career..." />
+    </div>
+    <div class="form-group full-width">
+      <label>Konten</label>
+      <textarea id="mBlogKonten" rows="8" placeholder="Tulis isi artikel Anda di sini..." required>${b.konten || ''}</textarea>
+    </div>
+    <div class="form-group">
+      <label>URL Gambar (opsional)</label>
+      <input id="mBlogGambar" value="${b.gambar_url || ''}" placeholder="https://..." />
+    </div>
+  `;
+}
+
+window.addBlog = () => {
+  openModal('Tambah Blog', getBlogFields(), async () => {
+    const body = {
+      judul: document.getElementById('mBlogJudul').value,
+      konten: document.getElementById('mBlogKonten').value,
+      kategori: document.getElementById('mBlogKategori').value || 'General',
+      gambar_url: document.getElementById('mBlogGambar').value,
+    };
+    await api('/blogs', { method: 'POST', body: JSON.stringify(body) });
+    closeModal();
+    loadBlogs();
+  });
+};
+
+window.editBlog = (b) => {
+  openModal('Edit Blog', getBlogFields(b), async () => {
+    const body = {
+      judul: document.getElementById('mBlogJudul').value,
+      konten: document.getElementById('mBlogKonten').value,
+      kategori: document.getElementById('mBlogKategori').value || 'General',
+      gambar_url: document.getElementById('mBlogGambar').value,
+    };
+    await api(`/blogs/${b.id}`, { method: 'PUT', body: JSON.stringify(body) });
+    closeModal();
+    loadBlogs();
+  });
+};
+
+window.delBlog = async function(id) {
+  if (!confirm('Yakin ingin menghapus blog ini?')) return;
+  await api(`/blogs/${id}`, { method: 'DELETE' });
+  loadBlogs();
 };
 
 // ---- Initial Load ----

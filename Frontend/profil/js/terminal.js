@@ -166,6 +166,10 @@ function processCommand(cmd) {
       case 'ls projects/':
         cmdProjects();
         break;
+      case 'blogs':
+      case 'articles':
+        cmdBlogs();
+        break;
       case 'contact':
         cmdContact();
         break;
@@ -210,6 +214,7 @@ function cmdHelp() {
     ['skills', 'List all skills & competencies'],
     ['experience', 'Show work & organization experience'],
     ['projects', 'List portfolio projects'],
+    ['blogs', 'List latest blog posts'],
     ['contact', 'Show contact information'],
     ['neofetch', 'System information (fun!)'],
     ['date', 'Show current date & time'],
@@ -290,6 +295,19 @@ function cmdProjects() {
   projects.forEach((p) => {
     printLine(`  <span class="t-cyan">📁</span> <span class="t-white">${p.judul || ''}</span>`);
     if (p.deskripsi) printLine(`     <span class="t-dim">${p.deskripsi}</span>`);
+  });
+}
+
+function cmdBlogs() {
+  const blogs = terminalData.blogs || [];
+  if (blogs.length === 0) {
+    printLine('<span class="t-yellow">⚠ No blog posts available</span>');
+    return;
+  }
+  printLine('<span class="t-cyan">Latest Articles:</span>');
+  blogs.forEach(b => {
+    printLine(`  <span class="t-green"># ${b.judul}</span>`);
+    printLine(`    <span class="t-dim">[${b.kategori}] - ${new Date(b.created_at).toLocaleDateString()}</span>`);
   });
 }
 

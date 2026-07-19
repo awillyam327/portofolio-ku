@@ -47,3 +47,14 @@ def get_skills_public():
         return jsonify({'success': True, 'data': result or []}), 200
     except Exception as e:
         return jsonify({'success': True, 'data': []}), 200
+
+@utama_bp.route('/blogs-public', methods=['GET'])
+def get_blogs_public():
+    """Endpoint publik untuk mengambil semua blog (tanpa token)."""
+    try:
+        db = Database()
+        query = "SELECT * FROM blogs ORDER BY created_at DESC"
+        result = db.execute_query(query, fetch=True)
+        return jsonify({'success': True, 'data': result or []}), 200
+    except Exception as e:
+        return jsonify({'success': True, 'data': []}), 200

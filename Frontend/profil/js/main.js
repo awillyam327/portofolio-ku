@@ -1,4 +1,4 @@
-import { getProfil, getExperiences, getProjects, getSkills, getCaseStudies, pick } from "./api.js";
+import { getProfil, getExperiences, getProjects, getSkills, getCaseStudies, getBlogs, pick } from "./api.js";
 import { initCursor } from "./cursor.js";
 import { initNavbar, setNavIdentity } from "./navbar.js";
 import { setProgress, setIdentity, reveal } from "./preloader.js";
@@ -54,12 +54,13 @@ async function bootstrap() {
   });
 
   // Fetch all data
-  const [profil, experiences, projects, skills, caseStudies] = await Promise.all([
+  const [profil, experiences, projects, skills, caseStudies, blogs] = await Promise.all([
     getProfil().catch(() => null),
     getExperiences().catch(() => []),
     getProjects().catch(() => []),
     getSkills().catch(() => []),
     getCaseStudies().catch(() => []),
+    getBlogs().catch(() => []),
     framesPromise
   ]);
 
@@ -114,7 +115,7 @@ async function bootstrap() {
     contactEmail.href = `mailto:${profil.email}`;
   }
 
-  renderDynamicContent(experiences, projects, skills, caseStudies);
+  renderDynamicContent(experiences, projects, skills, caseStudies, blogs);
 
   if (loadingEl) loadingEl.hidden = true;
 
@@ -127,7 +128,7 @@ async function bootstrap() {
   initAllSections();
 
   // ---- Premium Features ----
-  const allData = { profil, skills, experiences, projects };
+  const allData = { profil, skills, experiences, projects, blogs };
 
   // Terminal Easter Egg (Ctrl + `)
   try { initTerminal(allData); } catch (e) { console.warn('[Terminal] Init failed:', e); }
@@ -288,6 +289,30 @@ function renderDynamicContent(experiences, projects, skills, caseStudies) {
     });
     // Duplicate for infinite scrolling effect
     marquee.innerHTML += marquee.innerHTML;
+  }
+
+  // 5. Render Blogs
+  const blogsGrid = document.getElementById("dynamicBlogs");
+  if (blogsGrid && typeof blogs !== 'undefined' && blogs.length > 0) {
+    blogsGrid.innerHTML = "";
+    blogs.forEach(b => {
+      const date = new Date(b.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      const img = b.gambar_url ? `<div class="blog__image" style="background-image: url('${b.gambar_url}')"></div>` : '';
+      blogsGrid.innerHTML += `
+        <article class="blog__card" data-stagger-child>
+          ${img}
+          <div class="blog__content">
+            <div class="blog__meta">
+              <span class="blog__category">${b.kategori || 'General'}</span>
+              <span class="blog__date">${date}</span>
+            </div>
+            <h3 class="blog__title">${b.judul}</h3>
+            <p class="blog__excerpt">${b.konten.substring(0, 120)}...</p>
+            <a href="#" class="blog__readmore" onclick="alert('Full blog view coming soon!')">Read More <i class="ph ph-arrow-right"></i></a>
+          </div>
+        </article>
+      `;
+    });
   }
 }
 

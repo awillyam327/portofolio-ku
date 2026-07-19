@@ -21,6 +21,7 @@ DROP TABLE IF EXISTS contacts;
 DROP TABLE IF EXISTS skills;
 DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS case_studies;
+DROP TABLE IF EXISTS blogs;
 DROP TABLE IF EXISTS experiences;
 DROP TABLE IF EXISTS profiles;
 DROP TABLE IF EXISTS users;
@@ -177,3 +178,25 @@ INSERT INTO skills (user_id, nama_skill, icon_class) VALUES
 (1, 'E-Sports', 'ph ph-game-controller'),
 (1, 'Public Speaking', 'ph ph-microphone-stage'),
 (1, 'Teamwork', 'ph ph-users');
+
+-- ============================================================
+-- TABEL: blogs
+-- Menyimpan artikel / write-up / catatan
+-- ============================================================
+CREATE TABLE IF NOT EXISTS blogs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    judul VARCHAR(300) NOT NULL,
+    konten TEXT NOT NULL,
+    kategori VARCHAR(100) DEFAULT 'General',
+    gambar_url VARCHAR(500),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- ---- Blogs ----
+INSERT INTO blogs (user_id, judul, konten, kategori) VALUES
+(1, 'Apa Itu Cybersecurity?', 'Cybersecurity adalah praktik melindungi sistem, jaringan, dan program dari serangan digital. Serangan-serangan ini biasanya ditujukan untuk mengakses, mengubah, atau menghancurkan informasi sensitif. Sebagai mahasiswa yang berfokus pada keamanan siber, saya mempelajari berbagai teknik pertahanan mulai dari enkripsi data, firewall, hingga penetration testing.', 'Cybersecurity'),
+(1, 'Pengalaman Menjadi Ketua ISACA Student Group', 'Menjadi pemimpin organisasi IT di kampus mengajarkan saya banyak hal tentang manajemen tim, pengambilan keputusan, dan bagaimana mengkoordinasikan acara berskala nasional. Dari mengatur seminar AI hingga webinar audit keamanan, setiap tantangan membentuk karakter kepemimpinan saya.', 'Leadership'),
+(1, 'Tips Memulai Karir di Bidang IT Security', 'Bagi teman-teman yang ingin terjun ke dunia keamanan siber, mulailah dengan mempelajari dasar-dasar jaringan komputer dan sistem operasi Linux. Lanjutkan dengan sertifikasi seperti CompTIA Security+ atau CEH. Yang terpenting, selalu praktik dan ikuti CTF (Capture The Flag) competitions!', 'Career');
