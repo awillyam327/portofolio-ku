@@ -148,21 +148,26 @@ async function bootstrap() {
 }
 
 function renderDynamicContent(experiences, projects, skills, caseStudies, blogs, certificates) {
-  // 0. Render Projects (Showcase Tab 1)
+  // 0. Render Projects (Showcase Tab 1) - using caseStudies data (websites)
   const caseStudiesContainer = document.getElementById("dynamicCaseStudies");
-  if (caseStudiesContainer && projects && projects.length > 0) {
+  if (caseStudiesContainer && caseStudies && caseStudies.length > 0) {
     caseStudiesContainer.className = "showcase-grid";
     caseStudiesContainer.innerHTML = "";
-    projects.forEach(p => {
-      const img = p.gambar_url ? (p.gambar_url.startsWith('http') ? p.gambar_url : `/profil/img/${p.gambar_url}`) : 'https://via.placeholder.com/800x600/12121a/e8e8ed?text=No+Image';
-      const linkHtml = p.link_project ? `<a href="${p.link_project}" target="_blank" class="showcase-card__link">Live Demo / Details</a>` : '';
+    caseStudies.forEach(cs => {
+      // images are comma separated in case_studies table
+      const images = (cs.gambar_urls || "").split(',').map(img => img.trim()).filter(Boolean);
+      const img = images.length > 0 
+        ? (images[0].startsWith('http') ? images[0] : `/profil/img/${images[0]}`) 
+        : 'https://via.placeholder.com/800x600/12121a/e8e8ed?text=No+Image';
+        
+      const linkHtml = cs.link_project ? `<a href="${cs.link_project}" target="_blank" class="showcase-card__link">Live Demo / Details</a>` : '';
       
       caseStudiesContainer.innerHTML += `
         <div class="showcase-card">
-          <img src="${img}" alt="${p.judul}" class="showcase-card__img" />
+          <img src="${img}" alt="${cs.judul}" class="showcase-card__img" />
           <div class="showcase-card__content">
-            <h3 class="showcase-card__title">${p.judul}</h3>
-            <p class="showcase-card__desc">${p.deskripsi || ''}</p>
+            <h3 class="showcase-card__title">${cs.judul}</h3>
+            <p class="showcase-card__desc">${cs.deskripsi_singkat || ''}</p>
             ${linkHtml}
           </div>
         </div>
