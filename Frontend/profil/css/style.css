@@ -1844,7 +1844,7 @@ body.cyber-mode .blog__readmore { color: #00ff41; }
   align-self: flex-start;
   padding: 0.5rem 1rem;
   background: var(--foreground);
-  color: var(--background);
+  color: var(--void);
   text-decoration: none;
   border-radius: 6px;
   font-size: 0.85rem;
