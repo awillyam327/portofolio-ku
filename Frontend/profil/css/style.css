@@ -18,9 +18,6 @@
   box-sizing: border-box;
 }
 
-html {
-}
-
 :root {
   --void: #000000;
   --foreground: #f2f3f5;
