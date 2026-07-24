@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,18 +19,18 @@
       <form id="loginForm" class="login-form">
         <div class="form-group">
           <label for="username">Username</label>
-          <input type="text" id="username" placeholder="Masukkan username" required autocomplete="username" />
+          <input type="text" id="username" placeholder="Enter username" required autocomplete="username" />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" placeholder="Masukkan password" required autocomplete="current-password" />
+          <input type="password" id="password" placeholder="Enter password" required autocomplete="current-password" />
         </div>
         <button type="submit" class="btn-login" id="btnLogin">
-          <span>Masuk</span>
+          <span>Login</span>
         </button>
         <p class="login-error" id="loginError"></p>
         <div style="text-align: center; margin-top: 1rem;">
-          <a href="#" id="forgotBtn" style="color: var(--primary); text-decoration: none; font-size: 0.9rem;">Lupa Password?</a>
+          <a href="#" id="forgotBtn" style="color: var(--primary); text-decoration: none; font-size: 0.9rem;">Forgot Password?</a>
         </div>
       </form>
     </div>
@@ -40,18 +40,18 @@
   <div class="modal-overlay" id="forgotModal">
     <div class="modal" style="display: block; max-width: 400px; padding: 2rem;">
       <div class="modal__header">
-        <h3>Lupa Password</h3>
+        <h3>Forgot Password</h3>
         <button class="modal__close" id="forgotClose">&times;</button>
       </div>
       <form id="forgotForm" class="modal__body">
         <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
-          Masukkan username Anda. Link reset password akan dikirim ke email yang terdaftar di profil Anda.
+          Enter your username. A password reset link will be sent to the email registered in your profile.
         </p>
         <div class="form-group">
           <label for="forgotUsername">Username</label>
-          <input type="text" id="forgotUsername" placeholder="Masukkan username" required />
+          <input type="text" id="forgotUsername" placeholder="Enter username" required />
         </div>
-        <button type="submit" class="btn btn--primary" id="btnForgot" style="width: 100%;">Kirim Link Reset</button>
+        <button type="submit" class="btn btn--primary" id="btnForgot" style="width: 100%;">Send Reset Link</button>
         <p id="forgotMessage" style="margin-top: 1rem; font-size: 0.9rem; text-align: center;"></p>
       </form>
     </div>
@@ -66,7 +66,7 @@
       e.preventDefault();
       errorEl.textContent = '';
       btn.disabled = true;
-      btn.querySelector('span').textContent = 'Memproses...';
+      btn.querySelector('span').textContent = 'Processing...';
 
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value;
@@ -84,13 +84,13 @@
           localStorage.setItem('admin_name', data.user.username);
           window.location.href = '/admin/dashboard.html';
         } else {
-          errorEl.textContent = data.error || 'Terjadi kesalahan';
+          errorEl.textContent = data.error || 'An error occurred';
         }
       } catch (err) {
-        errorEl.textContent = 'Gagal menghubungi server';
+        errorEl.textContent = 'Failed to connect to server';
       } finally {
         btn.disabled = false;
-        btn.querySelector('span').textContent = 'Masuk';
+        btn.querySelector('span').textContent = 'Login';
       }
     });
 
@@ -117,7 +117,7 @@
       e.preventDefault();
       forgotMessage.textContent = '';
       btnForgot.disabled = true;
-      btnForgot.textContent = 'Mengirim...';
+      btnForgot.textContent = 'Sending...';
 
       const username = document.getElementById('forgotUsername').value.trim();
 
@@ -134,15 +134,15 @@
           forgotMessage.textContent = result.message;
         } else {
           forgotMessage.style.color = '#ff3333'; // Red for error
-          forgotMessage.textContent = result.error || 'Terjadi kesalahan pada server saat mengirim email';
+          forgotMessage.textContent = result.error || 'A server error occurred while sending email';
         }
       } catch (error) {
         forgotMessage.style.color = '#ff3333'; // Red for error
-        forgotMessage.textContent = 'Terjadi kesalahan koneksi jaringan';
+        forgotMessage.textContent = 'Network connection error occurred';
         console.error(error);
       } finally {
         btnForgot.disabled = false;
-        btnForgot.textContent = 'Kirim Link Reset';
+        btnForgot.textContent = 'Send Reset Link';
       }
     });
   </script>

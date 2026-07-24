@@ -110,11 +110,11 @@ async function loadDashboard() {
   const stats = data?.data || {};
   contentArea.innerHTML = `
     <div class="stats-grid">
-      <div class="stat-card"><h4>Pengalaman</h4><div class="stat-value">${stats.experiences_count || 0}</div></div>
-      <div class="stat-card"><h4>Proyek</h4><div class="stat-value">${stats.projects_count || 0}</div></div>
+      <div class="stat-card"><h4>Experiences</h4><div class="stat-value">${stats.experiences_count || 0}</div></div>
+      <div class="stat-card"><h4>Projects</h4><div class="stat-value">${stats.projects_count || 0}</div></div>
       <div class="stat-card"><h4>Tech Stack</h4><div class="stat-value">${stats.skills_count || 0}</div></div>
     </div>
-    <p style="color:var(--text-muted)">Selamat datang di Admin Panel, <strong>${adminName}</strong>. Gunakan menu di sebelah kiri untuk mengelola data portofolio Anda.</p>
+    <p style="color:var(--text-muted)">Welcome to the Admin Panel, <strong>${adminName}</strong>. Use the menu on the left to manage your portfolio data.</p>
   `;
 }
 
@@ -123,11 +123,11 @@ async function loadCaseStudies() {
   const res = await api('/case-studies');
   const items = res?.data || [];
   
-  let tableHtml = `<div class="empty-state"><i class="ph ph-clipboard-text"></i><p>Belum ada data.</p></div>`;
+  let tableHtml = `<div class="empty-state"><i class="ph ph-clipboard-text"></i><p>No data available.</p></div>`;
   
   if (items.length > 0) {
     tableHtml = `<table class="data-table">
-      <thead><tr><th>Judul</th><th>Tech Stack</th><th>Link</th><th>Aksi</th></tr></thead>
+      <thead><tr><th>Title</th><th>Tech Stack</th><th>Link</th><th>Actions</th></tr></thead>
       <tbody>
         ${items.map(p => `
           <tr>
@@ -136,7 +136,7 @@ async function loadCaseStudies() {
             <td>${p.link_project ? `<a href="${p.link_project}" target="_blank">Link</a>` : '-'}</td>
             <td class="table-actions">
               <button class="btn btn--sm btn--secondary" onclick='editCaseStudy(${JSON.stringify(p).replace(/"/g, "&quot;").replace(/'/g, "&#39;")})'>Edit</button>
-              <button class="btn btn--sm btn--danger" onclick="deleteCaseStudy(${p.id})">Hapus</button>
+              <button class="btn btn--sm btn--danger" onclick="deleteCaseStudy(${p.id})">Delete</button>
             </td>
           </tr>
         `).join('')}
@@ -147,7 +147,7 @@ async function loadCaseStudies() {
   contentArea.innerHTML = `
     <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
       <h2>Featured Projects (Studi Kasus)</h2>
-      <button class="btn btn--primary" onclick="addCaseStudy()"><i class="ph ph-plus"></i> Tambah</button>
+      <button class="btn btn--primary" onclick="addCaseStudy()"><i class="ph ph-plus"></i> Add</button>
     </div>
     ${tableHtml}
   `;
@@ -167,23 +167,23 @@ function getCaseStudyFields(p = {}) {
   `).join('');
 
   return `
-    <div class="form-group"><label>Judul</label><input name="judul" value="${p.judul || ''}" required /></div>
-    <div class="form-group"><label>Deskripsi Singkat</label><textarea name="deskripsi_singkat" rows="3" required>${p.deskripsi_singkat || ''}</textarea></div>
-    <div class="form-group"><label>Tech Stack (Pisahkan dgn | atau ,)</label><input name="tech_stack" value="${p.tech_stack || ''}" /></div>
-    <div class="form-group"><label>Penjelasan Detail</label><textarea name="penjelasan_detail" rows="5">${p.penjelasan_detail || ''}</textarea></div>
+    <div class="form-group"><label>Title</label><input name="judul" value="${p.judul || ''}" required /></div>
+    <div class="form-group"><label>Short Description</label><textarea name="deskripsi_singkat" rows="3" required>${p.deskripsi_singkat || ''}</textarea></div>
+    <div class="form-group"><label>Tech Stack (Separate with | or ,)</label><input name="tech_stack" value="${p.tech_stack || ''}" /></div>
+    <div class="form-group"><label>Detailed Explanation</label><textarea name="penjelasan_detail" rows="5">${p.penjelasan_detail || ''}</textarea></div>
     
     <div class="form-group">
-      <label>Gambar (Drag & Drop) Cloudinary</label>
+      <label>Image (Drag & Drop) Cloudinary</label>
       <input type="hidden" name="gambar_urls" id="hiddenGambarUrls" value="${p.gambar_urls || ''}" />
       <div class="dropzone" id="csDropzone">
         <i class="ph ph-cloud-arrow-up" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
-        <p>Drag & Drop foto website di sini atau klik untuk memilih file</p>
+        <p>Drag & Drop website photos here or click to select files</p>
         <input type="file" id="csFileInput" multiple accept="image/*" style="display:none;" />
       </div>
       <div class="dropzone-preview" id="csDropzonePreview">${previewHtml}</div>
     </div>
     
-    <div class="form-group"><label>Link Project</label><input name="link_project" value="${p.link_project || ''}" /></div>
+    <div class="form-group"><label>Project Link</label><input name="link_project" value="${p.link_project || ''}" /></div>
   `;
 }
 
@@ -227,7 +227,7 @@ function initDropzone() {
   });
   
   async function handleFiles(files) {
-    dropzone.innerHTML = `<p>Mengunggah ${files.length} foto...</p>`;
+    dropzone.innerHTML = `<p>Uploading ${files.length} photos...</p>`;
     
     let uploadedUrls = hiddenInput.value ? hiddenInput.value.split(',').filter(Boolean) : [];
     
@@ -254,7 +254,7 @@ function initDropzone() {
             </div>
           `;
         } else {
-          alert('Gagal upload: ' + data.error);
+          alert('Upload failed: ' + data.error);
         }
       } catch (e) {
         console.error(e);
@@ -264,13 +264,13 @@ function initDropzone() {
     hiddenInput.value = uploadedUrls.join(',');
     dropzone.innerHTML = `
       <i class="ph ph-check-circle" style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--primary);"></i>
-      <p>Selesai! Drag foto lain jika perlu.</p>
+      <p>Done! Drag another photo if needed.</p>
     `;
   }
 }
 
 window.addCaseStudy = () => {
-  openModal('Tambah Case Study', getCaseStudyFields(), async () => {
+  openModal('Add Case Study', getCaseStudyFields(), async () => {
     const fd = new FormData(modalForm);
     await api('/case-studies', { method: 'POST', body: JSON.stringify(Object.fromEntries(fd)) });
     closeModal();
@@ -290,7 +290,7 @@ window.editCaseStudy = (p) => {
 };
 
 window.deleteCaseStudy = async (id) => {
-  if (confirm('Yakin hapus case study ini?')) {
+  if (confirm('Are you sure you want to delete this case study?')) {
     await api(`/case-studies/${id}`, { method: 'DELETE' });
     loadCaseStudies();
   }
@@ -302,21 +302,21 @@ async function loadProfil() {
   const p = data?.data || {};
   contentArea.innerHTML = `
     <form class="profil-form" id="profilForm">
-      <div class="form-group"><label>Nama Lengkap</label><input name="nama_lengkap" value="${p.nama_lengkap || ''}" /></div>
-      <div class="form-group"><label>Nama Panggilan</label><input name="nama_panggilan" value="${p.nama_panggilan || ''}" /></div>
+      <div class="form-group"><label>Full Name</label><input name="nama_lengkap" value="${p.nama_lengkap || ''}" /></div>
+      <div class="form-group"><label>Nickname</label><input name="nama_panggilan" value="${p.nama_panggilan || ''}" /></div>
       <div class="form-group"><label>Email</label><input name="email" value="${p.email || ''}" /></div>
-      <div class="form-group"><label>Telepon</label><input name="telepon" value="${p.telepon || ''}" /></div>
-      <div class="form-group"><label>Universitas</label><input name="universitas" value="${p.universitas || ''}" /></div>
-      <div class="form-group"><label>Fakultas</label><input name="fakultas" value="${p.fakultas || ''}" /></div>
-      <div class="form-group"><label>Prodi</label><input name="prodi" value="${p.prodi || ''}" /></div>
+      <div class="form-group"><label>Phone</label><input name="telepon" value="${p.telepon || ''}" /></div>
+      <div class="form-group"><label>University</label><input name="universitas" value="${p.universitas || ''}" /></div>
+      <div class="form-group"><label>Faculty</label><input name="fakultas" value="${p.fakultas || ''}" /></div>
+      <div class="form-group"><label>Major</label><input name="prodi" value="${p.prodi || ''}" /></div>
       <div class="form-group"><label>Semester</label><input name="semester" type="number" value="${p.semester || ''}" /></div>
-      <div class="form-group"><label>Tempat Lahir</label><input name="tempat_lahir" value="${p.tempat_lahir || ''}" /></div>
+      <div class="form-group"><label>Place of Birth</label><input name="tempat_lahir" value="${p.tempat_lahir || ''}" /></div>
       <div class="form-group">
-        <label>Tanggal Lahir</label>
+        <label>Date of Birth</label>
         <input name="tanggal_lahir" type="date" value="${p.tanggal_lahir ? new Date(p.tanggal_lahir).toISOString().split('T')[0] : ''}" />
       </div>
-      <div class="form-group full-width"><label>Alamat</label><input name="alamat" value="${p.alamat || ''}" /></div>
-      <button type="submit" class="btn btn--primary">Simpan Profil</button>
+      <div class="form-group full-width"><label>Address</label><input name="alamat" value="${p.alamat || ''}" /></div>
+      <button type="submit" class="btn btn--primary">Save Profile</button>
     </form>
   `;
   document.getElementById('profilForm').addEventListener('submit', async (e) => {
@@ -325,17 +325,17 @@ async function loadProfil() {
     const body = Object.fromEntries(fd);
     body.semester = parseInt(body.semester) || 0;
     await api('/profiles', { method: 'PUT', body: JSON.stringify(body) });
-    alert('Profil berhasil disimpan!');
+    alert('Profile saved successfully!');
     loadProfil();
   });
 }
 
 // ===== GENERIC TABLE RENDER =====
 function renderTable(headers, rows, actions) {
-  if (!rows.length) return `<div class="empty-state"><i class="ph ph-clipboard-text"></i><p>Belum ada data.</p></div>`;
+  if (!rows.length) return `<div class="empty-state"><i class="ph ph-clipboard-text"></i><p>No data available.</p></div>`;
   let html = '<table class="data-table"><thead><tr>';
   headers.forEach(h => html += `<th>${h}</th>`);
-  html += '<th>Aksi</th></tr></thead><tbody>';
+  html += '<th>Actions</th></tr></thead><tbody>';
   rows.forEach(row => {
     html += '<tr>';
     row.cells.forEach(c => html += `<td>${c}</td>`);
@@ -353,12 +353,12 @@ async function loadExperiences() {
   const rows = items.map(i => ({ id: i.id, cells: [i.posisi, i.perusahaan, i.durasi, (i.deskripsi||'').substring(0,50)+'...'] }));
   contentArea.innerHTML = `
     <div class="action-bar">
-      <span>${items.length} pengalaman</span>
-      <button class="btn btn--primary" id="addExp"><i class="ph ph-plus"></i> Tambah</button>
+      <span>${items.length} experiences</span>
+      <button class="btn btn--primary" id="addExp"><i class="ph ph-plus"></i> Add</button>
     </div>
-    ${renderTable(['Posisi','Perusahaan','Durasi','Deskripsi'], rows, (id) => `
+    ${renderTable(['Position','Company','Duration','Description'], rows, (id) => `
       <button class="btn btn--sm btn--secondary" onclick="editExp(${id})">Edit</button>
-      <button class="btn btn--sm btn--danger" onclick="delExp(${id})">Hapus</button>
+      <button class="btn btn--sm btn--danger" onclick="delExp(${id})">Delete</button>
     `)}
   `;
   document.getElementById('addExp').addEventListener('click', () => editExp(null));
@@ -370,11 +370,11 @@ window.editExp = async function(id) {
     const data = await api('/experiences');
     item = (data?.data || []).find(i => i.id === id) || {};
   }
-  openModal(id ? 'Edit Pengalaman' : 'Tambah Pengalaman', `
-    <div class="form-group"><label>Posisi</label><input id="mPosisi" value="${item.posisi||''}" required /></div>
-    <div class="form-group"><label>Perusahaan</label><input id="mPerusahaan" value="${item.perusahaan||''}" required /></div>
-    <div class="form-group"><label>Durasi</label><input id="mDurasi" value="${item.durasi||''}" /></div>
-    <div class="form-group"><label>Deskripsi</label><textarea id="mDeskripsi" rows="3">${item.deskripsi||''}</textarea></div>
+  openModal(id ? 'Edit Experience' : 'Add Experience', `
+    <div class="form-group"><label>Position</label><input id="mPosisi" value="${item.posisi||''}" required /></div>
+    <div class="form-group"><label>Company</label><input id="mPerusahaan" value="${item.perusahaan||''}" required /></div>
+    <div class="form-group"><label>Duration</label><input id="mDurasi" value="${item.durasi||''}" /></div>
+    <div class="form-group"><label>Description</label><textarea id="mDeskripsi" rows="3">${item.deskripsi||''}</textarea></div>
   `, async () => {
     const body = {
       posisi: document.getElementById('mPosisi').value,
@@ -390,7 +390,7 @@ window.editExp = async function(id) {
 };
 
 window.delExp = async function(id) {
-  if (!confirm('Yakin ingin menghapus?')) return;
+  if (!confirm('Are you sure you want to delete?')) return;
   await api(`/experiences/${id}`, { method: 'DELETE' });
   loadExperiences();
 };
@@ -402,12 +402,12 @@ async function loadProjects() {
   const rows = items.map(i => ({ id: i.id, cells: [i.judul, (i.deskripsi||'').substring(0,50)+'...', i.gambar_url ? '✅' : '—'] }));
   contentArea.innerHTML = `
     <div class="action-bar">
-      <span>${items.length} proyek</span>
-      <button class="btn btn--primary" id="addProj"><i class="ph ph-plus"></i> Tambah</button>
+      <span>${items.length} projects</span>
+      <button class="btn btn--primary" id="addProj"><i class="ph ph-plus"></i> Add</button>
     </div>
-    ${renderTable(['Judul','Deskripsi','Gambar'], rows, (id) => `
+    ${renderTable(['Title','Description','Image'], rows, (id) => `
       <button class="btn btn--sm btn--secondary" onclick="editProj(${id})">Edit</button>
-      <button class="btn btn--sm btn--danger" onclick="delProj(${id})">Hapus</button>
+      <button class="btn btn--sm btn--danger" onclick="delProj(${id})">Delete</button>
     `)}
   `;
   document.getElementById('addProj').addEventListener('click', () => editProj(null));
@@ -419,12 +419,12 @@ window.editProj = async function(id) {
     const data = await api('/projects');
     item = (data?.data || []).find(i => i.id === id) || {};
   }
-  openModal(id ? 'Edit Proyek' : 'Tambah Proyek', `
-    <div class="form-group"><label>Judul</label><input id="mJudul" value="${item.judul||''}" required /></div>
-    <div class="form-group"><label>Deskripsi</label><textarea id="mDeskripsiP" rows="3">${item.deskripsi||''}</textarea></div>
-    <div class="form-group"><label>Link Project</label><input id="mLink" value="${item.link_project||''}" /></div>
-    <div class="form-group"><label>Upload Gambar (Cloudinary)</label><input id="mFile" type="file" accept="image/*" /></div>
-    <div class="form-group"><label>URL Gambar Saat Ini</label><input id="mGambarUrl" value="${item.gambar_url||''}" /></div>
+  openModal(id ? 'Edit Project' : 'Add Project', `
+    <div class="form-group"><label>Title</label><input id="mJudul" value="${item.judul||''}" required /></div>
+    <div class="form-group"><label>Description</label><textarea id="mDeskripsiP" rows="3">${item.deskripsi||''}</textarea></div>
+    <div class="form-group"><label>Project Link</label><input id="mLink" value="${item.link_project||''}" /></div>
+    <div class="form-group"><label>Upload Image (Cloudinary)</label><input id="mFile" type="file" accept="image/*" /></div>
+    <div class="form-group"><label>Current Image URL</label><input id="mGambarUrl" value="${item.gambar_url||''}" /></div>
   `, async () => {
     let gambar_url = document.getElementById('mGambarUrl').value;
     const file = document.getElementById('mFile').files[0];
@@ -446,7 +446,7 @@ window.editProj = async function(id) {
 };
 
 window.delProj = async function(id) {
-  if (!confirm('Yakin ingin menghapus?')) return;
+  if (!confirm('Are you sure you want to delete?')) return;
   await api(`/projects/${id}`, { method: 'DELETE' });
   loadProjects();
 };
@@ -459,11 +459,11 @@ async function loadSkills() {
   contentArea.innerHTML = `
     <div class="action-bar">
       <span>${items.length} Tech Stack</span>
-      <button class="btn btn--primary" id="addSkill"><i class="ph ph-plus"></i> Tambah</button>
+      <button class="btn btn--primary" id="addSkill"><i class="ph ph-plus"></i> Add</button>
     </div>
-    ${renderTable(['Nama Skill','Icon Class', 'Logo'], rows, (id) => `
+    ${renderTable(['Skill Name','Icon Class', 'Logo'], rows, (id) => `
       <button class="btn btn--sm btn--secondary" onclick="editSkill(${id})">Edit</button>
-      <button class="btn btn--sm btn--danger" onclick="delSkill(${id})">Hapus</button>
+      <button class="btn btn--sm btn--danger" onclick="delSkill(${id})">Delete</button>
     `)}
   `;
   document.getElementById('addSkill').addEventListener('click', () => editSkill(null));
@@ -475,11 +475,11 @@ window.editSkill = async function(id) {
     const data = await api('/skills');
     item = (data?.data || []).find(i => i.id === id) || {};
   }
-  openModal(id ? 'Edit Skill' : 'Tambah Skill', `
-    <div class="form-group"><label>Nama Skill</label><input id="mSkill" value="${item.nama_skill||''}" required /></div>
-    <div class="form-group"><label>Icon Class (Phosphor) (opsional)</label><input id="mIcon" value="${item.icon_class||''}" placeholder="ph ph-code" /></div>
+  openModal(id ? 'Edit Skill' : 'Add Skill', `
+    <div class="form-group"><label>Skill Name</label><input id="mSkill" value="${item.nama_skill||''}" required /></div>
+    <div class="form-group"><label>Icon Class (Phosphor) (optional)</label><input id="mIcon" value="${item.icon_class||''}" placeholder="ph ph-code" /></div>
     <div class="form-group"><label>Upload Logo</label><input id="mLogoFile" type="file" accept="image/*" /></div>
-    <div class="form-group"><label>URL Logo Saat Ini</label><input id="mLogoUrl" value="${item.logo_url||''}" /></div>
+    <div class="form-group"><label>Current Logo URL</label><input id="mLogoUrl" value="${item.logo_url||''}" /></div>
   `, async () => {
     let logo_url = document.getElementById('mLogoUrl').value;
     const file = document.getElementById('mLogoFile').files[0];
@@ -500,7 +500,7 @@ window.editSkill = async function(id) {
 };
 
 window.delSkill = async function(id) {
-  if (!confirm('Yakin ingin menghapus?')) return;
+  if (!confirm('Are you sure you want to delete?')) return;
   await api(`/skills/${id}`, { method: 'DELETE' });
   loadSkills();
 };
@@ -514,15 +514,15 @@ async function loadContacts() {
   } catch { items = []; }
   const rows = items.map(i => ({ id: i.id, cells: [i.nama, i.email, (i.pesan||'').substring(0,60)+'...', new Date(i.created_at).toLocaleDateString('id')] }));
   contentArea.innerHTML = `
-    <div class="action-bar"><span>${items.length} pesan masuk</span></div>
-    ${renderTable(['Nama','Email','Pesan','Tanggal'], rows, (id) => `
-      <button class="btn btn--sm btn--danger" onclick="delContact(${id})">Hapus</button>
+    <div class="action-bar"><span>${items.length} messages</span></div>
+    ${renderTable(['Name','Email','Message','Date'], rows, (id) => `
+      <button class="btn btn--sm btn--danger" onclick="delContact(${id})">Delete</button>
     `)}
   `;
 }
 
 window.delContact = async function(id) {
-  if (!confirm('Yakin ingin menghapus pesan ini?')) return;
+  if (!confirm('Are you sure you want to delete this message?')) return;
   await api(`/admin/contacts/${id}`, { method: 'DELETE' });
   loadContacts();
 };
@@ -537,17 +537,17 @@ async function loadBlogs() {
 
   contentArea.innerHTML = `
     <div class="header-action">
-      <h2>Daftar Blog / Write-ups</h2>
-      <button class="btn btn--primary" onclick="addBlog()"><i class="ph ph-plus"></i> Tambah Blog</button>
+      <h2>Blogs / Write-ups List</h2>
+      <button class="btn btn--primary" onclick="addBlog()"><i class="ph ph-plus"></i> Add Blog</button>
     </div>
     <div class="table-container">
       <table class="table">
         <thead>
           <tr>
-            <th>Judul</th>
-            <th>Kategori</th>
-            <th>Tanggal</th>
-            <th>Aksi</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -562,7 +562,7 @@ async function loadBlogs() {
               </td>
             </tr>
           `).join('')}
-          ${items.length === 0 ? '<tr><td colspan="4" class="empty-state">Belum ada blog. Mulai menulis!</td></tr>' : ''}
+          ${items.length === 0 ? '<tr><td colspan="4" class="empty-state">No blogs available. Start writing!</td></tr>' : ''}
         </tbody>
       </table>
     </div>
@@ -572,26 +572,26 @@ async function loadBlogs() {
 function getBlogFields(b = {}) {
   return `
     <div class="form-group">
-      <label>Judul</label>
-      <input id="mBlogJudul" value="${b.judul || ''}" placeholder="Judul artikel..." required />
+      <label>Title</label>
+      <input id="mBlogJudul" value="${b.judul || ''}" placeholder="Article title..." required />
     </div>
     <div class="form-group">
-      <label>Kategori</label>
+      <label>Category</label>
       <input id="mBlogKategori" value="${b.kategori || ''}" placeholder="Cybersecurity, Leadership, Career..." />
     </div>
     <div class="form-group full-width">
-      <label>Konten</label>
-      <textarea id="mBlogKonten" rows="8" placeholder="Tulis isi artikel Anda di sini..." required>${b.konten || ''}</textarea>
+      <label>Content</label>
+      <textarea id="mBlogKonten" rows="8" placeholder="Write your article here..." required>${b.konten || ''}</textarea>
     </div>
     <div class="form-group">
-      <label>URL Gambar (opsional)</label>
+      <label>Image URL (optional)</label>
       <input id="mBlogGambar" value="${b.gambar_url || ''}" placeholder="https://..." />
     </div>
   `;
 }
 
 window.addBlog = () => {
-  openModal('Tambah Blog', getBlogFields(), async () => {
+  openModal('Add Blog', getBlogFields(), async () => {
     const body = {
       judul: document.getElementById('mBlogJudul').value,
       konten: document.getElementById('mBlogKonten').value,
@@ -619,7 +619,7 @@ window.editBlog = (b) => {
 };
 
 window.delBlog = async function(id) {
-  if (!confirm('Yakin ingin menghapus blog ini?')) return;
+  if (!confirm('Are you sure you want to delete this blog?')) return;
   await api(`/blogs/${id}`, { method: 'DELETE' });
   loadBlogs();
 };
@@ -632,11 +632,11 @@ async function loadCertificates() {
   contentArea.innerHTML = `
     <div class="action-bar">
       <span>${items.length} certificates</span>
-      <button class="btn btn--primary" id="addCert"><i class="ph ph-plus"></i> Tambah</button>
+      <button class="btn btn--primary" id="addCert"><i class="ph ph-plus"></i> Add</button>
     </div>
-    ${renderTable(['Judul', 'Gambar'], rows, (id) => `
+    ${renderTable(['Title', 'Image'], rows, (id) => `
       <button class="btn btn--sm btn--secondary" onclick="editCertificate(${id})">Edit</button>
-      <button class="btn btn--sm btn--danger" onclick="delCertificate(${id})">Hapus</button>
+      <button class="btn btn--sm btn--danger" onclick="delCertificate(${id})">Delete</button>
     `)}
   `;
   document.getElementById('addCert').addEventListener('click', () => editCertificate(null));
@@ -648,10 +648,10 @@ window.editCertificate = async function(id) {
     const data = await api('/certificates');
     item = (data?.data || []).find(i => i.id === id) || {};
   }
-  openModal(id ? 'Edit Certificate' : 'Tambah Certificate', `
-    <div class="form-group"><label>Judul Sertifikat</label><input id="mCertJudul" value="${item.judul||''}" required /></div>
-    <div class="form-group"><label>Upload Gambar</label><input id="mCertFile" type="file" accept="image/*" /></div>
-    <div class="form-group"><label>URL Gambar Saat Ini</label><input id="mCertUrl" value="${item.gambar_url||''}" /></div>
+  openModal(id ? 'Edit Certificate' : 'Add Certificate', `
+    <div class="form-group"><label>Certificate Title</label><input id="mCertJudul" value="${item.judul||''}" required /></div>
+    <div class="form-group"><label>Upload Image</label><input id="mCertFile" type="file" accept="image/*" /></div>
+    <div class="form-group"><label>Current Image URL</label><input id="mCertUrl" value="${item.gambar_url||''}" /></div>
   `, async () => {
     let gambar_url = document.getElementById('mCertUrl').value;
     const file = document.getElementById('mCertFile').files[0];
@@ -671,7 +671,7 @@ window.editCertificate = async function(id) {
 };
 
 window.delCertificate = async function(id) {
-  if (!confirm('Yakin ingin menghapus sertifikat ini?')) return;
+  if (!confirm('Are you sure you want to delete this certificate?')) return;
   await api(`/certificates/${id}`, { method: 'DELETE' });
   loadCertificates();
 };
